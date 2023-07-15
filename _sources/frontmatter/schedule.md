@@ -19,4 +19,4 @@ The course materials are divided into *exercises* and *challenges*:
 
 - Challenges are a chance to test your skills on realistic problems. These are provided without a solution; you will have to use what you learned from the Exercises to complete these challenges.
 
-<iframe class="airtable-embed" src="https://airtable.com/embed/shrPLfh4Vrchpanne?backgroundColor=cyan&viewControls=on" frameborder="0" onmousewheel="" width="100%" height="533" style="background: transparent; border: 1px solid #ccc;"></iframe>
+<iframe class="airtable-embed" src="https://airtable.com/appXhXfm3VmW4a5vF/shrWJynZFbHZQufrg" frameborder="0" onmousewheel="" width="100%" height="533" style="background: transparent; border: 1px solid #ccc;"></iframe>
