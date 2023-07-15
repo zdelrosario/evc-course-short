@@ -1,2 +1,2 @@
-py-grama>=0.3.4
+py-grama>=0.3.6
 nycflights13
