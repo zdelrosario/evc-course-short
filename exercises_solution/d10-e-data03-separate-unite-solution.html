@@ -1,0 +1,1656 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>Data: Separating and Uniting Columns &#8212; Data Science for Engineers</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'exercises_solution/d10-e-data03-separate-unite-solution';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Data: Joining Datasets" href="d11-e-data04-join-solution.html" />
+    <link rel="prev" title="Stats: Descriptive Statistics" href="d09-e-stat03-descriptive-solution.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+  
+
+<a class="navbar-brand logo" href="../frontmatter/home.html">
+  
+  
+  
+  
+  
+    <p class="title logo__title">Data Science for Engineers</p>
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../frontmatter/home.html">
+                    Data Science for Engineers
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../frontmatter/setup.html">Software Setup</a></li>
+
+
+
+
+
+
+
+<li class="toctree-l1"><a class="reference internal" href="../frontmatter/howto.html">How To Use These Materials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../frontmatter/schedule.html">Course Topics and Schedule</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../frontmatter/submission.html">Challenge Submission Instructions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../frontmatter/demos.html">Demo Notebooks</a></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="../frontmatter/exercises.html">Exercise Solutions</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="d00-e-stat01-eda-solution.html">Stats: Introduction to Exploratory Data Analysis</a></li>
+
+
+<li class="toctree-l2"><a class="reference internal" href="d00-e-tips-solution.html">Tips for This Course</a></li>
+
+
+<li class="toctree-l2"><a class="reference internal" href="d00-e-vis01-bar-charts-solution.html">Vis: Bar Charts</a></li>
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="d01-e-grama01-basics-solution.html">Grama: Basics</a></li>
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="d02-e-data01-derive-solution.html">Data: Deriving Quantities</a></li>
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="d03-e-vis02-histograms-solution.html">Vis: Histograms</a></li>
+
+
+<li class="toctree-l2"><a class="reference internal" href="d04-e-stat02-source-solution.html">Stats: Real and Erroneous Sources of Variability</a></li>
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="d05-e-vis03-scatterplot-solution.html">Vis: Scatterplots and Layers</a></li>
+
+
+<li class="toctree-l2"><a class="reference internal" href="d06-e-data02-pivot-solution.html">Data: Pivoting Data</a></li>
+
+
+<li class="toctree-l2"><a class="reference internal" href="d06-e-grama02-building-solution.html">Grama: Model Building</a></li>
+
+
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="d07-e-grama03-eval-solution.html">Grama: Model Evaluation</a></li>
+
+
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="d08-e-vis04-lines-solution.html">Vis: Lines and Related Geometries</a></li>
+
+
+<li class="toctree-l2"><a class="reference internal" href="d09-e-stat03-descriptive-solution.html">Stats: Descriptive Statistics</a></li>
+
+
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Data: Separating and Uniting Columns</a></li>
+
+
+<li class="toctree-l2"><a class="reference internal" href="d11-e-data04-join-solution.html">Data: Joining Datasets</a></li>
+
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="d12-e-vis05-multiples-solution.html">Vis: Small Multiples</a></li>
+
+
+<li class="toctree-l2"><a class="reference internal" href="d13-e-grama04-ema-solution.html">Grama: Exploratory Model Analysis</a></li>
+
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="d14-e-stat04-distributions-solution.html">Stats: Distributions</a></li>
+
+
+<li class="toctree-l2"><a class="reference internal" href="d15-e-grama05-fit-function-solution.html">Grama: Fitting Functions</a></li>
+
+
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="d16-e-stat05-CI-solution.html">Stats: Confidence Intervals and the CLT</a></li>
+
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="d17-e-stat06-spc-solution.html">Stats: Fundamentals of Statistical Process Monitoring</a></li>
+
+
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="d18-e-grama06-fit-univar-solution.html">Grama: Fitting Univariate Distributions</a></li>
+
+
+
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="d19-e-grama07-fit-multivar-solution.html">Grama: Fitting Multivariate Distributions</a></li>
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="d20-e-grama08-duu-solution.html">Grama: Design Under Uncertainty</a></li>
+
+
+</ul>
+</li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/exercises_solution/d10-e-data03-separate-unite-solution.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script>
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Data: Separating and Uniting Columns</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Data: Separating and Uniting Columns</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#setup">Setup</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#separate-and-unite">Separate and Unite</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-gr-tf-separate-verb">The <code class="docutils literal notranslate"><span class="pre">gr.tf_separate()</span></code> verb</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#q1-separate-the-population-and-year"><strong>q1</strong> Separate the <code class="docutils literal notranslate"><span class="pre">population</span></code> and <code class="docutils literal notranslate"><span class="pre">year</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-gr-tf-unite-verb">The <code class="docutils literal notranslate"><span class="pre">gr.tf_unite()</span></code> verb</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#q2-unite-the-digits"><strong>q2</strong> Unite the digits</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#case-study-tidying-an-alloy-dataset">Case Study: Tidying an Alloy Dataset</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#q3-add-a-unique-observation-identifier"><strong>q3</strong> Add a unique observation identifier</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#q4-separate-the-variable-and-angle-data"><strong>q4</strong> Separate the <code class="docutils literal notranslate"><span class="pre">variable</span></code> and <code class="docutils literal notranslate"><span class="pre">angle</span></code> data</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#q5-finish-tidying-the-data"><strong>q5</strong> Finish tidying the data</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#aside-what-happens-without-the-unique-id">Aside: What happens without the unique id?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-magic-option-value">A <em>magic</em> option: <code class="docutils literal notranslate"><span class="pre">".value"</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#q6-use-the-value-approach"><strong>q6</strong> Use the <code class="docutils literal notranslate"><span class="pre">".value"</span></code> approach</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="data-separating-and-uniting-columns">
+<h1>Data: Separating and Uniting Columns<a class="headerlink" href="#data-separating-and-uniting-columns" title="Permalink to this heading">#</a></h1>
+<p><em>Purpose</em>: Data is easiest to use when it is <em>tidy</em>. In fact, grama is specifically designed to use tidy data. Last time we learned how to pivot data, but data can be untidy in other ways. Pivoting helped us when data were locked up in the <em>column headers</em>: This time, we’ll learn how to use <em>separate</em> and <em>unite</em> to deal with <em>cell values</em> that are untidy.</p>
+<section id="setup">
+<h2>Setup<a class="headerlink" href="#setup" title="Permalink to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">grama</span> <span class="k">as</span> <span class="nn">gr</span>
+<span class="n">DF</span> <span class="o">=</span> <span class="n">gr</span><span class="o">.</span><span class="n">Intention</span><span class="p">()</span>
+<span class="o">%</span><span class="k">matplotlib</span> inline
+
+<span class="c1"># For assertion</span>
+<span class="kn">from</span> <span class="nn">pandas.api.types</span> <span class="kn">import</span> <span class="n">is_integer_dtype</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="separate-and-unite">
+<h1>Separate and Unite<a class="headerlink" href="#separate-and-unite" title="Permalink to this heading">#</a></h1>
+<p>Sometimes data are presented in a <em>wide</em> format in order to fit many values on a page. You’ll often see this form of data when looking at large datasets that have been prepared for a report (say, a UN population survey). For example, the following dataset is clearly not tidy:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">## NOTE: No need to edit</span>
+<span class="n">gr</span><span class="o">.</span><span class="n">df_make</span><span class="p">(</span>
+    <span class="n">country</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Afghanistan&quot;</span><span class="p">,</span> <span class="s2">&quot;Albania&quot;</span><span class="p">,</span> <span class="s2">&quot;Algeria&quot;</span><span class="p">],</span>
+    <span class="n">population_1995</span><span class="o">=</span><span class="p">[</span><span class="mi">17586073</span><span class="p">,</span> <span class="mi">3357858</span><span class="p">,</span> <span class="mi">29315463</span><span class="p">],</span>
+    <span class="n">population_1996</span><span class="o">=</span><span class="p">[</span><span class="mi">18415307</span><span class="p">,</span> <span class="mi">3341043</span><span class="p">,</span> <span class="mi">29845208</span><span class="p">],</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>country</th>
+      <th>population_1995</th>
+      <th>population_1996</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Afghanistan</td>
+      <td>17586073</td>
+      <td>18415307</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Albania</td>
+      <td>3357858</td>
+      <td>3341043</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Algeria</td>
+      <td>29315463</td>
+      <td>29845208</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>The year of each population measurement is “locked up” in the column names. However, pivoting this dataset only gets us so far:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">## NOTE: No need to edit</span>
+<span class="p">(</span>
+    <span class="n">gr</span><span class="o">.</span><span class="n">df_make</span><span class="p">(</span>
+        <span class="n">country</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Afghanistan&quot;</span><span class="p">,</span> <span class="s2">&quot;Albania&quot;</span><span class="p">,</span> <span class="s2">&quot;Algeria&quot;</span><span class="p">],</span>
+        <span class="n">population_1995</span><span class="o">=</span><span class="p">[</span><span class="mi">17586073</span><span class="p">,</span> <span class="mi">3357858</span><span class="p">,</span> <span class="mi">29315463</span><span class="p">],</span>
+        <span class="n">population_1996</span><span class="o">=</span><span class="p">[</span><span class="mi">18415307</span><span class="p">,</span> <span class="mi">3341043</span><span class="p">,</span> <span class="mi">29845208</span><span class="p">],</span>
+    <span class="p">)</span>
+    <span class="o">&gt;&gt;</span> <span class="n">gr</span><span class="o">.</span><span class="n">tf_pivot_longer</span><span class="p">(</span>
+        <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;population_1995&quot;</span><span class="p">,</span> <span class="s2">&quot;population_1996&quot;</span><span class="p">],</span>
+        <span class="n">names_to</span><span class="o">=</span><span class="s2">&quot;name&quot;</span><span class="p">,</span>
+        <span class="n">values_to</span><span class="o">=</span><span class="s2">&quot;value&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>country</th>
+      <th>name</th>
+      <th>value</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Afghanistan</td>
+      <td>population_1995</td>
+      <td>17586073</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Albania</td>
+      <td>population_1995</td>
+      <td>3357858</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Algeria</td>
+      <td>population_1995</td>
+      <td>29315463</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>Afghanistan</td>
+      <td>population_1996</td>
+      <td>18415307</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>Albania</td>
+      <td>population_1996</td>
+      <td>3341043</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>Algeria</td>
+      <td>population_1996</td>
+      <td>29845208</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>The column names are not simply cell values; they’re a combination of both column names and cell values. To fully tidy this datset, we need to <em>separate</em> the names from the data.</p>
+<section id="the-gr-tf-separate-verb">
+<h2>The <code class="docutils literal notranslate"><span class="pre">gr.tf_separate()</span></code> verb<a class="headerlink" href="#the-gr-tf-separate-verb" title="Permalink to this heading">#</a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">gr.tf_separate()</span></code> verb allows us to separate <em>string-valued</em> columns on a target character. As a simple example, consider the following (silly) dataset:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">## NOTE: No need to edit</span>
+<span class="p">(</span>
+    <span class="n">gr</span><span class="o">.</span><span class="n">df_make</span><span class="p">(</span><span class="n">s</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;A-123&quot;</span><span class="p">,</span> <span class="s2">&quot;B-456&quot;</span><span class="p">,</span> <span class="s2">&quot;C-789&quot;</span><span class="p">])</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>s</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>A-123</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>B-456</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>C-789</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>If we wanted to separate the column <code class="docutils literal notranslate"><span class="pre">s</span></code> into two columns on the <code class="docutils literal notranslate"><span class="pre">-</span></code> character, we could do that with <code class="docutils literal notranslate"><span class="pre">gr.tf_separate()</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">## NOTE: No need to edit</span>
+<span class="p">(</span>
+    <span class="n">gr</span><span class="o">.</span><span class="n">df_make</span><span class="p">(</span><span class="n">s</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;A-123&quot;</span><span class="p">,</span> <span class="s2">&quot;B-456&quot;</span><span class="p">,</span> <span class="s2">&quot;C-789&quot;</span><span class="p">])</span>
+    <span class="o">&gt;&gt;</span> <span class="n">gr</span><span class="o">.</span><span class="n">tf_separate</span><span class="p">(</span>
+        <span class="n">column</span><span class="o">=</span><span class="s2">&quot;s&quot;</span><span class="p">,</span>
+        <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;-&quot;</span><span class="p">,</span>
+        <span class="n">into</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;letter&quot;</span><span class="p">,</span> <span class="s2">&quot;numbers&quot;</span><span class="p">],</span>
+    <span class="p">)</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>letter</th>
+      <th>numbers</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>A</td>
+      <td>123</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>B</td>
+      <td>456</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>C</td>
+      <td>789</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>Note that we have two new columns with the separated values. We can use this approach to help tidy datasets.</p>
+<section id="q1-separate-the-population-and-year">
+<h3><strong>q1</strong> Separate the <code class="docutils literal notranslate"><span class="pre">population</span></code> and <code class="docutils literal notranslate"><span class="pre">year</span></code><a class="headerlink" href="#q1-separate-the-population-and-year" title="Permalink to this heading">#</a></h3>
+<p>Use <code class="docutils literal notranslate"><span class="pre">gr.tf_separate()</span></code> to separate the <code class="docutils literal notranslate"><span class="pre">population</span></code> and <code class="docutils literal notranslate"><span class="pre">year</span></code> values into their own columns.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">## TASK: Separate the population and year columns</span>
+<span class="n">df_pop</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">gr</span><span class="o">.</span><span class="n">df_make</span><span class="p">(</span>
+        <span class="n">country</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Afghanistan&quot;</span><span class="p">,</span> <span class="s2">&quot;Albania&quot;</span><span class="p">,</span> <span class="s2">&quot;Algeria&quot;</span><span class="p">],</span>
+        <span class="n">population_1995</span><span class="o">=</span><span class="p">[</span><span class="mi">17586073</span><span class="p">,</span> <span class="mi">3357858</span><span class="p">,</span> <span class="mi">29315463</span><span class="p">],</span>
+        <span class="n">population_1996</span><span class="o">=</span><span class="p">[</span><span class="mi">18415307</span><span class="p">,</span> <span class="mi">3341043</span><span class="p">,</span> <span class="mi">29845208</span><span class="p">],</span>
+    <span class="p">)</span>
+    <span class="o">&gt;&gt;</span> <span class="n">gr</span><span class="o">.</span><span class="n">tf_pivot_longer</span><span class="p">(</span>
+        <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;population_1995&quot;</span><span class="p">,</span> <span class="s2">&quot;population_1996&quot;</span><span class="p">],</span>
+        <span class="n">names_to</span><span class="o">=</span><span class="s2">&quot;pop_year&quot;</span><span class="p">,</span>
+        <span class="n">values_to</span><span class="o">=</span><span class="s2">&quot;value&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="o">&gt;&gt;</span> <span class="n">gr</span><span class="o">.</span><span class="n">tf_separate</span><span class="p">(</span>
+        <span class="n">column</span><span class="o">=</span><span class="s2">&quot;pop_year&quot;</span><span class="p">,</span>
+        <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;_&quot;</span><span class="p">,</span>
+        <span class="n">into</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;population&quot;</span><span class="p">,</span> <span class="s2">&quot;year&quot;</span><span class="p">],</span>
+    <span class="p">)</span>
+<span class="p">)</span>
+
+<span class="c1">## NOTE: No need to edit; use this to check your work</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df_pop</span><span class="p">)</span>
+
+<span class="k">assert</span> \
+    <span class="s2">&quot;population&quot;</span> <span class="ow">in</span> <span class="n">df_pop</span><span class="o">.</span><span class="n">columns</span><span class="p">,</span> \
+    <span class="s2">&quot;df_pop does not have a `population` column&quot;</span>
+<span class="k">assert</span> \
+    <span class="s2">&quot;year&quot;</span> <span class="ow">in</span> <span class="n">df_pop</span><span class="o">.</span><span class="n">columns</span><span class="p">,</span> \
+    <span class="s2">&quot;df_pop does not have a `year` column&quot;</span>
+<span class="k">assert</span> \
+    <span class="n">df_pop</span><span class="o">.</span><span class="n">shape</span> <span class="o">==</span> <span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> \
+    <span class="s2">&quot;df_pop is the wrong shape&quot;</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>       country     value  population  year
+0  Afghanistan  17586073  population  1995
+1      Albania   3357858  population  1995
+2      Algeria  29315463  population  1995
+3  Afghanistan  18415307  population  1996
+4      Albania   3341043  population  1996
+5      Algeria  29845208  population  1996
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="the-gr-tf-unite-verb">
+<h2>The <code class="docutils literal notranslate"><span class="pre">gr.tf_unite()</span></code> verb<a class="headerlink" href="#the-gr-tf-unite-verb" title="Permalink to this heading">#</a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">gr.tf_unite()</span></code> verb performs the inverse of <code class="docutils literal notranslate"><span class="pre">gr.tf_separate()</span></code>; <code class="docutils literal notranslate"><span class="pre">gr.tf_unite()</span></code> allows us to combine multiple string columns into a single column. For example, we can undo the separation you performed above:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">## NOTE: No need to edit</span>
+<span class="p">(</span>
+    <span class="n">df_pop</span>
+    <span class="o">&gt;&gt;</span> <span class="n">gr</span><span class="o">.</span><span class="n">tf_unite</span><span class="p">(</span>
+        <span class="s2">&quot;population-year&quot;</span><span class="p">,</span>
+        <span class="n">DF</span><span class="o">.</span><span class="n">population</span><span class="p">,</span>
+        <span class="n">DF</span><span class="o">.</span><span class="n">year</span><span class="p">,</span>
+        <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;-&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>country</th>
+      <th>value</th>
+      <th>population-year</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Afghanistan</td>
+      <td>17586073</td>
+      <td>population-1995</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Albania</td>
+      <td>3357858</td>
+      <td>population-1995</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Algeria</td>
+      <td>29315463</td>
+      <td>population-1995</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>Afghanistan</td>
+      <td>18415307</td>
+      <td>population-1996</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>Albania</td>
+      <td>3341043</td>
+      <td>population-1996</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>Algeria</td>
+      <td>29845208</td>
+      <td>population-1996</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>Note that we have to choose what to name the new united column, the set of columns to combine, and a separator character with the <code class="docutils literal notranslate"><span class="pre">sep</span></code> argument. While the example above is not terribly practical, there are many cases where we’ll have many strings that we might like to join.</p>
+<section id="q2-unite-the-digits">
+<h3><strong>q2</strong> Unite the digits<a class="headerlink" href="#q2-unite-the-digits" title="Permalink to this heading">#</a></h3>
+<p>Add the <code class="docutils literal notranslate"><span class="pre">area</span></code> code to the <em>front</em> of each <code class="docutils literal notranslate"><span class="pre">localnumber</span></code> to complete the following phone numbers. Provide the full number as the column <code class="docutils literal notranslate"><span class="pre">number</span></code>. Make sure to use the separator character <code class="docutils literal notranslate"><span class="pre">-</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">## TASK:</span>
+<span class="n">df_numbers</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">gr</span><span class="o">.</span><span class="n">df_make</span><span class="p">(</span>
+        <span class="n">localnumber</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;255-2112&quot;</span><span class="p">,</span> <span class="s2">&quot;255-4200&quot;</span><span class="p">,</span> <span class="s2">&quot;867-5309&quot;</span><span class="p">],</span>
+        <span class="n">area</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;212&quot;</span><span class="p">,</span> <span class="s2">&quot;650&quot;</span><span class="p">,</span> <span class="s2">&quot;814&quot;</span><span class="p">],</span>
+    <span class="p">)</span>
+    <span class="o">&gt;&gt;</span> <span class="n">gr</span><span class="o">.</span><span class="n">tf_unite</span><span class="p">(</span>
+        <span class="s2">&quot;number&quot;</span><span class="p">,</span>
+        <span class="n">DF</span><span class="o">.</span><span class="n">area</span><span class="p">,</span>
+        <span class="n">DF</span><span class="o">.</span><span class="n">localnumber</span><span class="p">,</span>
+        <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;-&quot;</span>
+    <span class="p">)</span>
+<span class="p">)</span>
+
+<span class="c1">## NOTE: Use this to check your work</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df_numbers</span><span class="p">)</span>
+
+<span class="k">assert</span> \
+    <span class="s2">&quot;number&quot;</span> <span class="ow">in</span> <span class="n">df_numbers</span><span class="o">.</span><span class="n">columns</span><span class="p">,</span> \
+    <span class="s2">&quot;df_numbers does not have a `number` column&quot;</span>
+<span class="k">assert</span> \
+    <span class="p">(</span><span class="n">df_numbers</span> <span class="o">&gt;&gt;</span> <span class="n">gr</span><span class="o">.</span><span class="n">tf_filter</span><span class="p">(</span><span class="n">gr</span><span class="o">.</span><span class="n">str_detect</span><span class="p">(</span><span class="n">DF</span><span class="o">.</span><span class="n">number</span><span class="p">,</span> <span class="s2">&quot;_&quot;</span><span class="p">)))</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">,</span> \
+    <span class="s2">&quot;Separator `_` detected; make sure to use `-` as your separator&quot;</span>
+<span class="k">assert</span> \
+    <span class="p">(</span><span class="n">df_numbers</span> <span class="o">&gt;&gt;</span> <span class="n">gr</span><span class="o">.</span><span class="n">tf_filter</span><span class="p">(</span><span class="n">gr</span><span class="o">.</span><span class="n">str_detect</span><span class="p">(</span><span class="n">DF</span><span class="o">.</span><span class="n">number</span><span class="p">,</span> <span class="s2">&quot;^212|^650|^814&quot;</span><span class="p">)))</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">3</span><span class="p">,</span> \
+    <span class="s2">&quot;The area codes are not at the *front* of the numbers&quot;</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>         number
+0  212-255-2112
+1  650-255-4200
+2  814-867-5309
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="case-study-tidying-an-alloy-dataset">
+<h1>Case Study: Tidying an Alloy Dataset<a class="headerlink" href="#case-study-tidying-an-alloy-dataset" title="Permalink to this heading">#</a></h1>
+<p>Now let’s make use of <code class="docutils literal notranslate"><span class="pre">gr.tf_separate()</span></code> in tidying a more engineering-focused dataset. The following is a small dataset of measured aluminum alloy material properties.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">## NOTE: No need to edit</span>
+<span class="n">df_alloys</span> <span class="o">=</span> <span class="n">gr</span><span class="o">.</span><span class="n">df_make</span><span class="p">(</span>
+    <span class="n">thick</span><span class="o">=</span><span class="p">[</span><span class="mf">0.022</span><span class="p">]</span><span class="o">*</span><span class="mi">2</span> <span class="o">+</span> <span class="p">[</span><span class="mf">0.032</span><span class="p">]</span><span class="o">*</span><span class="mi">2</span><span class="p">,</span>
+    <span class="n">E_00</span><span class="o">=</span><span class="p">[</span><span class="mi">10600</span><span class="p">,</span> <span class="mi">10600</span><span class="p">,</span> <span class="mi">10400</span><span class="p">,</span> <span class="mi">10300</span><span class="p">],</span>
+    <span class="n">mu_00</span><span class="o">=</span><span class="p">[</span><span class="mf">0.321</span><span class="p">,</span> <span class="mf">0.323</span><span class="p">,</span> <span class="mf">0.329</span><span class="p">,</span> <span class="mf">0.319</span><span class="p">],</span>
+    <span class="n">E_45</span><span class="o">=</span><span class="p">[</span><span class="mi">10700</span><span class="p">,</span> <span class="mi">10500</span><span class="p">,</span> <span class="mi">10400</span><span class="p">,</span> <span class="mi">10500</span><span class="p">],</span>
+    <span class="n">mu_45</span><span class="o">=</span><span class="p">[</span><span class="mf">0.329</span><span class="p">,</span> <span class="mf">0.331</span><span class="p">,</span> <span class="mf">0.318</span><span class="p">,</span> <span class="mf">0.326</span><span class="p">],</span>
+<span class="p">)</span>
+
+<span class="n">df_alloys</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>thick</th>
+      <th>E_00</th>
+      <th>mu_00</th>
+      <th>E_45</th>
+      <th>mu_45</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0.022</td>
+      <td>10600</td>
+      <td>0.321</td>
+      <td>10700</td>
+      <td>0.329</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>0.022</td>
+      <td>10600</td>
+      <td>0.323</td>
+      <td>10500</td>
+      <td>0.331</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>0.032</td>
+      <td>10400</td>
+      <td>0.329</td>
+      <td>10400</td>
+      <td>0.318</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>0.032</td>
+      <td>10300</td>
+      <td>0.319</td>
+      <td>10500</td>
+      <td>0.326</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>Note that this dataset is not tidy: The digits in the column names are the angles at which the alloys were tested. In order to tidy this dataset, we’ll have to go through a few steps:</p>
+<section id="q3-add-a-unique-observation-identifier">
+<h2><strong>q3</strong> Add a unique observation identifier<a class="headerlink" href="#q3-add-a-unique-observation-identifier" title="Permalink to this heading">#</a></h2>
+<p>Later, when we attempt a <code class="docutils literal notranslate"><span class="pre">gr.tf_pivot_wider()</span></code> down the line, we’ll need a unique identifier for each row in the original dataset. Create a new column <code class="docutils literal notranslate"><span class="pre">id_obs</span></code> that uniquely identifies each row.</p>
+<p><em>Hint</em>: You could just use the DataFrame’s <code class="docutils literal notranslate"><span class="pre">index</span></code> column to do this….</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">## TASK: Add a unique identifier (UID) to each row</span>
+<span class="n">df_alloys_id</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">df_alloys</span>
+
+    <span class="o">&gt;&gt;</span> <span class="n">gr</span><span class="o">.</span><span class="n">tf_mutate</span><span class="p">(</span><span class="n">id_obs</span><span class="o">=</span><span class="n">DF</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
+<span class="p">)</span>
+
+<span class="c1">## NOTE: Use this to check your work</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df_alloys_id</span><span class="p">)</span>
+
+<span class="k">assert</span> \
+    <span class="s2">&quot;id_obs&quot;</span> <span class="ow">in</span> <span class="n">df_alloys_id</span><span class="o">.</span><span class="n">columns</span><span class="p">,</span> \
+    <span class="s2">&quot;df_alloys_id has no `id_obs` column&quot;</span>
+
+<span class="k">assert</span> \
+    <span class="nb">len</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">df_alloys_id</span><span class="o">.</span><span class="n">id_obs</span><span class="p">))</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">df_alloys_id</span><span class="o">.</span><span class="n">id_obs</span><span class="p">),</span> \
+    <span class="s2">&quot;The values in df_alloys_id.id_obs are not unique&quot;</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   thick   E_00  mu_00   E_45  mu_45  id_obs
+0  0.022  10600  0.321  10700  0.329       0
+1  0.022  10600  0.323  10500  0.331       1
+2  0.032  10400  0.329  10400  0.318       2
+3  0.032  10300  0.319  10500  0.326       3
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="q4-separate-the-variable-and-angle-data">
+<h2><strong>q4</strong> Separate the <code class="docutils literal notranslate"><span class="pre">variable</span></code> and <code class="docutils literal notranslate"><span class="pre">angle</span></code> data<a class="headerlink" href="#q4-separate-the-variable-and-angle-data" title="Permalink to this heading">#</a></h2>
+<p>The following code pivots the data longer; use <code class="docutils literal notranslate"><span class="pre">gr.tf_separate()</span></code> to separate the <code class="docutils literal notranslate"><span class="pre">variable</span></code> and <code class="docutils literal notranslate"><span class="pre">angle</span></code> data.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">## TASK: Separate the `variable` and `angle` data</span>
+<span class="n">df_alloys_separated</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">df_alloys_id</span>
+    <span class="o">&gt;&gt;</span> <span class="n">gr</span><span class="o">.</span><span class="n">tf_pivot_longer</span><span class="p">(</span>
+        <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;E_00&quot;</span><span class="p">,</span> <span class="s2">&quot;E_45&quot;</span><span class="p">,</span> <span class="s2">&quot;mu_00&quot;</span><span class="p">,</span> <span class="s2">&quot;mu_45&quot;</span><span class="p">],</span>
+        <span class="n">names_to</span><span class="o">=</span><span class="s2">&quot;variable_angle&quot;</span><span class="p">,</span>
+        <span class="n">values_to</span><span class="o">=</span><span class="s2">&quot;value&quot;</span>
+    <span class="p">)</span>
+    <span class="o">&gt;&gt;</span> <span class="n">gr</span><span class="o">.</span><span class="n">tf_separate</span><span class="p">(</span>
+        <span class="n">column</span><span class="o">=</span><span class="s2">&quot;variable_angle&quot;</span><span class="p">,</span>
+        <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;_&quot;</span><span class="p">,</span>
+        <span class="n">into</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;variable&quot;</span><span class="p">,</span> <span class="s2">&quot;angle&quot;</span><span class="p">],</span>
+    <span class="p">)</span>
+<span class="p">)</span>
+
+<span class="c1">## NOTE: use this to check your work</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df_alloys_separated</span><span class="p">)</span>
+
+<span class="k">assert</span> \
+    <span class="s2">&quot;variable&quot;</span> <span class="ow">in</span> <span class="n">df_alloys_separated</span><span class="o">.</span><span class="n">columns</span><span class="p">,</span> \
+    <span class="s2">&quot;df_alloys_separated has no `variable` column&quot;</span>
+
+<span class="k">assert</span> \
+    <span class="s2">&quot;angle&quot;</span> <span class="ow">in</span> <span class="n">df_alloys_separated</span><span class="o">.</span><span class="n">columns</span><span class="p">,</span> \
+    <span class="s2">&quot;df_alloys_separated has no `angle` column&quot;</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    thick  id_obs      value variable angle
+0   0.022       0  10600.000        E    00
+1   0.022       1  10600.000        E    00
+2   0.032       2  10400.000        E    00
+3   0.032       3  10300.000        E    00
+4   0.022       0  10700.000        E    45
+5   0.022       1  10500.000        E    45
+6   0.032       2  10400.000        E    45
+7   0.032       3  10500.000        E    45
+8   0.022       0      0.321       mu    00
+9   0.022       1      0.323       mu    00
+10  0.032       2      0.329       mu    00
+11  0.032       3      0.319       mu    00
+12  0.022       0      0.329       mu    45
+13  0.022       1      0.331       mu    45
+14  0.032       2      0.318       mu    45
+15  0.032       3      0.326       mu    45
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="q5-finish-tidying-the-data">
+<h2><strong>q5</strong> Finish tidying the data<a class="headerlink" href="#q5-finish-tidying-the-data" title="Permalink to this heading">#</a></h2>
+<p>Finish tidying the data: Use a pivot to move the <code class="docutils literal notranslate"><span class="pre">variable</span></code> names back to being column names, and make sure the <code class="docutils literal notranslate"><span class="pre">angle</span></code> values are integers.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">## TASK: Finish tidying the data</span>
+<span class="n">df_alloys_tidy</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">df_alloys_separated</span>
+    <span class="o">&gt;&gt;</span> <span class="n">gr</span><span class="o">.</span><span class="n">tf_pivot_wider</span><span class="p">(</span>
+        <span class="n">names_from</span><span class="o">=</span><span class="s2">&quot;variable&quot;</span><span class="p">,</span>
+        <span class="n">values_from</span><span class="o">=</span><span class="s2">&quot;value&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="o">&gt;&gt;</span> <span class="n">gr</span><span class="o">.</span><span class="n">tf_mutate</span><span class="p">(</span><span class="n">angle</span><span class="o">=</span><span class="n">gr</span><span class="o">.</span><span class="n">as_int</span><span class="p">(</span><span class="n">DF</span><span class="o">.</span><span class="n">angle</span><span class="p">))</span>
+<span class="p">)</span>
+
+<span class="c1">## NOTE: Use this to check your work</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df_alloys_tidy</span><span class="p">)</span>
+
+<span class="k">assert</span> \
+    <span class="s2">&quot;E&quot;</span> <span class="ow">in</span> <span class="n">df_alloys_tidy</span><span class="o">.</span><span class="n">columns</span><span class="p">,</span> \
+    <span class="s2">&quot;df_alloys_tidy does not have an `E` column&quot;</span>
+<span class="k">assert</span> \
+    <span class="s2">&quot;mu&quot;</span> <span class="ow">in</span> <span class="n">df_alloys_tidy</span><span class="o">.</span><span class="n">columns</span><span class="p">,</span> \
+    <span class="s2">&quot;df_alloys_tidy does not have an `mu` column&quot;</span>
+<span class="k">assert</span> \
+    <span class="n">is_integer_dtype</span><span class="p">(</span><span class="n">df_alloys_tidy</span><span class="o">.</span><span class="n">angle</span><span class="p">),</span> \
+    <span class="s2">&quot;df_alloys_tidy.angle is not an integer column&quot;</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   thick  id_obs  angle        E     mu
+0  0.022       0      0  10600.0  0.321
+1  0.022       0     45  10700.0  0.329
+2  0.022       1      0  10600.0  0.323
+3  0.022       1     45  10500.0  0.331
+4  0.032       2      0  10400.0  0.329
+5  0.032       2     45  10400.0  0.318
+6  0.032       3      0  10300.0  0.319
+7  0.032       3     45  10500.0  0.326
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="aside-what-happens-without-the-unique-id">
+<h2>Aside: What happens without the unique id?<a class="headerlink" href="#aside-what-happens-without-the-unique-id" title="Permalink to this heading">#</a></h2>
+<p>Above, I made a fuss about adding a unique id column to the dataset before we start pivoting. What happens if we don’t do that?</p>
+<div class="cell tag_raises-exception docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># NOTE: Uncomment the code below and run this cell to see the error</span>
+<span class="c1"># (</span>
+<span class="c1">#     df_alloys</span>
+<span class="c1">#     # NOTE: I didn&#39;t add a UID here; let&#39;s see what happens....</span>
+    
+<span class="c1">#     &gt;&gt; gr.tf_pivot_longer(</span>
+<span class="c1">#         columns=[&quot;E_00&quot;, &quot;E_45&quot;, &quot;mu_00&quot;, &quot;mu_45&quot;],</span>
+<span class="c1">#         names_to=&quot;varang&quot;,</span>
+<span class="c1">#         values_to=&quot;value&quot;</span>
+<span class="c1">#     )</span>
+<span class="c1">#     &gt;&gt; gr.tf_separate(</span>
+<span class="c1">#         column=&quot;varang&quot;,</span>
+<span class="c1">#         sep=&quot;_&quot;,</span>
+<span class="c1">#         into=[&quot;var&quot;, &quot;ang&quot;],</span>
+<span class="c1">#     )</span>
+<span class="c1">#     &gt;&gt; gr.tf_pivot_wider(</span>
+<span class="c1">#         names_from=&quot;var&quot;,</span>
+<span class="c1">#         values_from=&quot;value&quot;,</span>
+<span class="c1">#     )</span>
+<span class="c1"># )</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We had to do a <em>lot</em> of work to tidy this dataset. Perhaps there’s a better way?</p>
+</section>
+<section id="a-magic-option-value">
+<h2>A <em>magic</em> option: <code class="docutils literal notranslate"><span class="pre">&quot;.value&quot;</span></code><a class="headerlink" href="#a-magic-option-value" title="Permalink to this heading">#</a></h2>
+<p>To help minimize some of the work necessary for tidying, <code class="docutils literal notranslate"><span class="pre">gr.tf_pivot_longer()</span></code> provides some special functionality. To illustrate this, let’s take a look at a full tidying effort on a dataset similar to the alloy one:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">## NOTE: No need to edit, this demonstrates the manual approach we&#39;ve already seen</span>
+<span class="p">(</span>
+    <span class="n">gr</span><span class="o">.</span><span class="n">df_make</span><span class="p">(</span>
+        <span class="n">A_01</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">],</span>
+        <span class="n">A_02</span><span class="o">=</span><span class="p">[</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">8</span><span class="p">],</span>
+        <span class="n">B_01</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">7</span><span class="p">],</span>
+    <span class="p">)</span>
+    <span class="c1"># Generate a unique observation id</span>
+    <span class="o">&gt;&gt;</span> <span class="n">gr</span><span class="o">.</span><span class="n">tf_mutate</span><span class="p">(</span><span class="n">uid</span><span class="o">=</span><span class="n">DF</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
+    <span class="c1"># Pivot longer to turn column names into cell values</span>
+    <span class="o">&gt;&gt;</span> <span class="n">gr</span><span class="o">.</span><span class="n">tf_pivot_longer</span><span class="p">(</span>
+        <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;A_01&quot;</span><span class="p">,</span> <span class="s2">&quot;A_02&quot;</span><span class="p">,</span> <span class="s2">&quot;B_01&quot;</span><span class="p">],</span>
+        <span class="n">names_to</span><span class="o">=</span><span class="s2">&quot;varidx&quot;</span><span class="p">,</span>
+        <span class="n">values_to</span><span class="o">=</span><span class="s2">&quot;value&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="c1"># Separate the &quot;true&quot; column names from the cell entries</span>
+    <span class="o">&gt;&gt;</span> <span class="n">gr</span><span class="o">.</span><span class="n">tf_separate</span><span class="p">(</span>
+        <span class="n">column</span><span class="o">=</span><span class="s2">&quot;varidx&quot;</span><span class="p">,</span>
+        <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;_&quot;</span><span class="p">,</span>
+        <span class="n">into</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;var&quot;</span><span class="p">,</span> <span class="s2">&quot;idx&quot;</span><span class="p">],</span>
+    <span class="p">)</span>
+    <span class="c1"># Pivot wider to place correct column names in header</span>
+    <span class="o">&gt;&gt;</span> <span class="n">gr</span><span class="o">.</span><span class="n">tf_pivot_wider</span><span class="p">(</span>
+        <span class="n">names_from</span><span class="o">=</span><span class="s2">&quot;var&quot;</span><span class="p">,</span>
+        <span class="n">values_from</span><span class="o">=</span><span class="s2">&quot;value&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>uid</th>
+      <th>idx</th>
+      <th>A</th>
+      <th>B</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0</td>
+      <td>01</td>
+      <td>1.0</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>0</td>
+      <td>02</td>
+      <td>5.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>1</td>
+      <td>01</td>
+      <td>2.0</td>
+      <td>3.0</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>1</td>
+      <td>02</td>
+      <td>6.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>2</td>
+      <td>01</td>
+      <td>3.0</td>
+      <td>5.0</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>2</td>
+      <td>02</td>
+      <td>7.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>3</td>
+      <td>01</td>
+      <td>4.0</td>
+      <td>7.0</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>3</td>
+      <td>02</td>
+      <td>8.0</td>
+      <td>NaN</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>This gets the job done. However, there is a much more succinct way to tidy this dataset using just one call to <code class="docutils literal notranslate"><span class="pre">gr.tf_pivot_longer()</span></code> with the <code class="docutils literal notranslate"><span class="pre">&quot;.value&quot;</span></code> argument.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">## NOTE: No need to edit, this demonstrates the &quot;.value&quot; approach</span>
+<span class="p">(</span>
+    <span class="n">gr</span><span class="o">.</span><span class="n">df_make</span><span class="p">(</span>
+        <span class="n">A_01</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">],</span>
+        <span class="n">A_02</span><span class="o">=</span><span class="p">[</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">8</span><span class="p">],</span>
+        <span class="n">B_01</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">7</span><span class="p">],</span>
+    <span class="p">)</span>
+    
+<span class="o">&gt;&gt;</span> <span class="n">gr</span><span class="o">.</span><span class="n">tf_pivot_longer</span><span class="p">(</span>
+        <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;A_01&quot;</span><span class="p">,</span> <span class="s2">&quot;A_02&quot;</span><span class="p">,</span> <span class="s2">&quot;B_01&quot;</span><span class="p">],</span>
+        <span class="n">names_to</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;.value&quot;</span><span class="p">,</span> <span class="s2">&quot;idx&quot;</span><span class="p">],</span>
+        <span class="n">names_sep</span><span class="o">=</span><span class="s2">&quot;_&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>idx</th>
+      <th>A</th>
+      <th>B</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>01</td>
+      <td>1.0</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>02</td>
+      <td>5.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>01</td>
+      <td>2.0</td>
+      <td>3.0</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>02</td>
+      <td>6.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>01</td>
+      <td>3.0</td>
+      <td>5.0</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>02</td>
+      <td>7.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>01</td>
+      <td>4.0</td>
+      <td>7.0</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>02</td>
+      <td>8.0</td>
+      <td>NaN</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>This style of calling <code class="docutils literal notranslate"><span class="pre">gr.tf_pivot_longer()</span></code> with the <code class="docutils literal notranslate"><span class="pre">names_sep</span></code> argument effectively <em>embeds</em> a call to <code class="docutils literal notranslate"><span class="pre">gr.tf_separate()</span></code> within the pivot. The verb then automates the tedious steps of creating a unique ID and pivoting wider.</p>
+<p>In order to use this special functionality, we have to target the final column names using the special <code class="docutils literal notranslate"><span class="pre">&quot;.value&quot;</span></code> argument. Note that this shows up in the <code class="docutils literal notranslate"><span class="pre">names_to</span></code> set of arguments; where we would have specified the name of the column that we would eventually pivot wider:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>    <span class="n">names_to</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;var&quot;</span><span class="p">,</span> <span class="s2">&quot;idx&quot;</span><span class="p">],</span>
+    <span class="n">names_sep</span><span class="o">=</span><span class="s2">&quot;_&quot;</span><span class="p">,</span>
+</pre></div>
+</div>
+<p>we instead flag this column as the target to pivot wider with the special argument</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>    <span class="n">names_to</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;.value&quot;</span><span class="p">,</span> <span class="s2">&quot;idx&quot;</span><span class="p">],</span>
+    <span class="n">names_sep</span><span class="o">=</span><span class="s2">&quot;_&quot;</span><span class="p">,</span>
+</pre></div>
+</div>
+<section id="q6-use-the-value-approach">
+<h3><strong>q6</strong> Use the <code class="docutils literal notranslate"><span class="pre">&quot;.value&quot;</span></code> approach<a class="headerlink" href="#q6-use-the-value-approach" title="Permalink to this heading">#</a></h3>
+<p>Use the <code class="docutils literal notranslate"><span class="pre">&quot;.value&quot;</span></code> approach to tidy the alloy dataset in one pivot.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">## TASK: Use the &quot;.value&quot; approach to tidy the alloy dataset in one pivot</span>
+<span class="p">(</span>
+    <span class="n">gr</span><span class="o">.</span><span class="n">df_make</span><span class="p">(</span>
+        <span class="n">thick</span><span class="o">=</span><span class="p">[</span><span class="mf">0.022</span><span class="p">]</span><span class="o">*</span><span class="mi">2</span> <span class="o">+</span> <span class="p">[</span><span class="mf">0.032</span><span class="p">]</span><span class="o">*</span><span class="mi">2</span><span class="p">,</span>
+        <span class="n">E_00</span><span class="o">=</span><span class="p">[</span><span class="mi">10600</span><span class="p">,</span> <span class="mi">10600</span><span class="p">,</span> <span class="mi">10400</span><span class="p">,</span> <span class="mi">10300</span><span class="p">],</span>
+        <span class="n">mu_00</span><span class="o">=</span><span class="p">[</span><span class="mf">0.321</span><span class="p">,</span> <span class="mf">0.323</span><span class="p">,</span> <span class="mf">0.329</span><span class="p">,</span> <span class="mf">0.319</span><span class="p">],</span>
+        <span class="n">E_45</span><span class="o">=</span><span class="p">[</span><span class="mi">10700</span><span class="p">,</span> <span class="mi">10500</span><span class="p">,</span> <span class="mi">10400</span><span class="p">,</span> <span class="mi">10500</span><span class="p">],</span>
+        <span class="n">mu_45</span><span class="o">=</span><span class="p">[</span><span class="mf">0.329</span><span class="p">,</span> <span class="mf">0.331</span><span class="p">,</span> <span class="mf">0.318</span><span class="p">,</span> <span class="mf">0.326</span><span class="p">],</span>
+    <span class="p">)</span>
+    <span class="o">&gt;&gt;</span> <span class="n">gr</span><span class="o">.</span><span class="n">tf_pivot_longer</span><span class="p">(</span>
+        <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;E_00&quot;</span><span class="p">,</span> <span class="s2">&quot;mu_00&quot;</span><span class="p">,</span> <span class="s2">&quot;E_45&quot;</span><span class="p">,</span> <span class="s2">&quot;mu_45&quot;</span><span class="p">],</span>
+        <span class="n">names_to</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;.value&quot;</span><span class="p">,</span> <span class="s2">&quot;angle&quot;</span><span class="p">],</span>
+        <span class="n">names_sep</span><span class="o">=</span><span class="s2">&quot;_&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/Users/zach/Git/py_grama/grama/tran_pivot.py:471: SettingWithCopyWarning: 
+A value is trying to be set on a copy of a slice from a DataFrame
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+</pre></div>
+</div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>thick</th>
+      <th>angle</th>
+      <th>E</th>
+      <th>mu</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0.022</td>
+      <td>00</td>
+      <td>10600.0</td>
+      <td>0.321</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>0.022</td>
+      <td>45</td>
+      <td>10700.0</td>
+      <td>0.329</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>0.022</td>
+      <td>00</td>
+      <td>10600.0</td>
+      <td>0.323</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>0.022</td>
+      <td>45</td>
+      <td>10500.0</td>
+      <td>0.331</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>0.032</td>
+      <td>00</td>
+      <td>10400.0</td>
+      <td>0.329</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>0.032</td>
+      <td>45</td>
+      <td>10400.0</td>
+      <td>0.318</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>0.032</td>
+      <td>00</td>
+      <td>10300.0</td>
+      <td>0.319</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>0.032</td>
+      <td>45</td>
+      <td>10500.0</td>
+      <td>0.326</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./exercises_solution"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+                <footer class="bd-footer-article">
+                  
+<div class="footer-article-items footer-article__inner">
+  
+    <div class="footer-article-item"><!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="d09-e-stat03-descriptive-solution.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Stats: Descriptive Statistics</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="d11-e-data04-join-solution.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Data: Joining Datasets</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div></div>
+  
+</div>
+
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Data: Separating and Uniting Columns</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#setup">Setup</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#separate-and-unite">Separate and Unite</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-gr-tf-separate-verb">The <code class="docutils literal notranslate"><span class="pre">gr.tf_separate()</span></code> verb</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#q1-separate-the-population-and-year"><strong>q1</strong> Separate the <code class="docutils literal notranslate"><span class="pre">population</span></code> and <code class="docutils literal notranslate"><span class="pre">year</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-gr-tf-unite-verb">The <code class="docutils literal notranslate"><span class="pre">gr.tf_unite()</span></code> verb</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#q2-unite-the-digits"><strong>q2</strong> Unite the digits</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#case-study-tidying-an-alloy-dataset">Case Study: Tidying an Alloy Dataset</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#q3-add-a-unique-observation-identifier"><strong>q3</strong> Add a unique observation identifier</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#q4-separate-the-variable-and-angle-data"><strong>q4</strong> Separate the <code class="docutils literal notranslate"><span class="pre">variable</span></code> and <code class="docutils literal notranslate"><span class="pre">angle</span></code> data</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#q5-finish-tidying-the-data"><strong>q5</strong> Finish tidying the data</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#aside-what-happens-without-the-unique-id">Aside: What happens without the unique id?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-magic-option-value">A <em>magic</em> option: <code class="docutils literal notranslate"><span class="pre">".value"</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#q6-use-the-value-approach"><strong>q6</strong> Use the <code class="docutils literal notranslate"><span class="pre">".value"</span></code> approach</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Zachary del Rosario
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

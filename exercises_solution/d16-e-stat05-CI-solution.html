@@ -1,0 +1,1531 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>Stats: Confidence Intervals and the CLT &#8212; Data Science for Engineers</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'exercises_solution/d16-e-stat05-CI-solution';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Stats: Fundamentals of Statistical Process Monitoring" href="d17-e-stat06-spc-solution.html" />
+    <link rel="prev" title="Grama: Fitting Functions" href="d15-e-grama05-fit-function-solution.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+  
+
+<a class="navbar-brand logo" href="../frontmatter/home.html">
+  
+  
+  
+  
+  
+    <p class="title logo__title">Data Science for Engineers</p>
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../frontmatter/home.html">
+                    Data Science for Engineers
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../frontmatter/setup.html">Software Setup</a></li>
+
+
+
+
+
+
+
+<li class="toctree-l1"><a class="reference internal" href="../frontmatter/howto.html">How To Use These Materials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../frontmatter/schedule.html">Course Topics and Schedule</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../frontmatter/submission.html">Challenge Submission Instructions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../frontmatter/demos.html">Demo Notebooks</a></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="../frontmatter/exercises.html">Exercise Solutions</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="d00-e-stat01-eda-solution.html">Stats: Introduction to Exploratory Data Analysis</a></li>
+
+
+<li class="toctree-l2"><a class="reference internal" href="d00-e-tips-solution.html">Tips for This Course</a></li>
+
+
+<li class="toctree-l2"><a class="reference internal" href="d00-e-vis01-bar-charts-solution.html">Vis: Bar Charts</a></li>
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="d01-e-grama01-basics-solution.html">Grama: Basics</a></li>
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="d02-e-data01-derive-solution.html">Data: Deriving Quantities</a></li>
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="d03-e-vis02-histograms-solution.html">Vis: Histograms</a></li>
+
+
+<li class="toctree-l2"><a class="reference internal" href="d04-e-stat02-source-solution.html">Stats: Real and Erroneous Sources of Variability</a></li>
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="d05-e-vis03-scatterplot-solution.html">Vis: Scatterplots and Layers</a></li>
+
+
+<li class="toctree-l2"><a class="reference internal" href="d06-e-data02-pivot-solution.html">Data: Pivoting Data</a></li>
+
+
+<li class="toctree-l2"><a class="reference internal" href="d06-e-grama02-building-solution.html">Grama: Model Building</a></li>
+
+
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="d07-e-grama03-eval-solution.html">Grama: Model Evaluation</a></li>
+
+
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="d08-e-vis04-lines-solution.html">Vis: Lines and Related Geometries</a></li>
+
+
+<li class="toctree-l2"><a class="reference internal" href="d09-e-stat03-descriptive-solution.html">Stats: Descriptive Statistics</a></li>
+
+
+<li class="toctree-l2"><a class="reference internal" href="d10-e-data03-separate-unite-solution.html">Data: Separating and Uniting Columns</a></li>
+
+
+<li class="toctree-l2"><a class="reference internal" href="d11-e-data04-join-solution.html">Data: Joining Datasets</a></li>
+
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="d12-e-vis05-multiples-solution.html">Vis: Small Multiples</a></li>
+
+
+<li class="toctree-l2"><a class="reference internal" href="d13-e-grama04-ema-solution.html">Grama: Exploratory Model Analysis</a></li>
+
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="d14-e-stat04-distributions-solution.html">Stats: Distributions</a></li>
+
+
+<li class="toctree-l2"><a class="reference internal" href="d15-e-grama05-fit-function-solution.html">Grama: Fitting Functions</a></li>
+
+
+
+
+
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Stats: Confidence Intervals and the CLT</a></li>
+
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="d17-e-stat06-spc-solution.html">Stats: Fundamentals of Statistical Process Monitoring</a></li>
+
+
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="d18-e-grama06-fit-univar-solution.html">Grama: Fitting Univariate Distributions</a></li>
+
+
+
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="d19-e-grama07-fit-multivar-solution.html">Grama: Fitting Multivariate Distributions</a></li>
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="d20-e-grama08-duu-solution.html">Grama: Design Under Uncertainty</a></li>
+
+
+</ul>
+</li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/exercises_solution/d16-e-stat05-CI-solution.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script>
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Stats: Confidence Intervals and the CLT</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Stats: Confidence Intervals and the CLT</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#setup">Setup</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#theory-fundamentals">Theory Fundamentals</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#motivation-we-might-have-seen-other-data">Motivation: We might have seen other data</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sampling-distribution">Sampling Distribution</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#central-limit-theorem-clt">Central Limit Theorem (CLT)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#q1-study-clt-convergence-behavior"><strong>q1</strong> Study CLT convergence behavior</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#confidence-intervals-ci">Confidence Intervals (CI)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#q2-compute-a-confidence-interval"><strong>q2</strong> Compute a confidence interval</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#q3-study-the-ci-width"><strong>q3</strong> Study the CI width</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#interpreting-confidence-intervals">Interpreting Confidence Intervals</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#golden-rule-of-confidence-intervals">Golden Rule of Confidence Intervals</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#q4-interpret-these-intervals"><strong>q4</strong> Interpret these intervals</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#probability-estimation">Probability Estimation</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#q5-adjust-the-sample-size"><strong>q5</strong> Adjust the sample size</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#q6-design-for-small-failure-rate"><strong>q6</strong> Design for small failure rate</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#real-vs-error">Real vs Error</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#q7-selecting-the-proper-statistical-technique"><strong>q7</strong> Selecting the proper statistical technique</a></li>
+</ul>
+</li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="stats-confidence-intervals-and-the-clt">
+<h1>Stats: Confidence Intervals and the CLT<a class="headerlink" href="#stats-confidence-intervals-and-the-clt" title="Permalink to this heading">#</a></h1>
+<p><em>Purpose</em>: When studying a limited dataset, we need a principled way to report our results with their uncertainties. Confidence intervals (CI) are an excellent way to summarize results, and the central limit theorem (CLT) helps us to construct these intervals. Eventually, we will use the same ideas underlying CI’s to detect patterns using <em>statistical process monitoring</em>.</p>
+<section id="setup">
+<h2>Setup<a class="headerlink" href="#setup" title="Permalink to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">grama</span> <span class="k">as</span> <span class="nn">gr</span>
+<span class="n">DF</span> <span class="o">=</span> <span class="n">gr</span><span class="o">.</span><span class="n">Intention</span><span class="p">()</span>
+<span class="o">%</span><span class="k">matplotlib</span> inline
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="theory-fundamentals">
+<h1>Theory Fundamentals<a class="headerlink" href="#theory-fundamentals" title="Permalink to this heading">#</a></h1>
+<p>To make sense of confidence intervals, we will need a bit of background information. First up: Why are we studying confidence intervals?</p>
+<section id="motivation-we-might-have-seen-other-data">
+<h2>Motivation: We might have seen other data<a class="headerlink" href="#motivation-we-might-have-seen-other-data" title="Permalink to this heading">#</a></h2>
+<p>Anytime we have a <em>particular</em> dataset, we should keep in mind that <em>we might have seen other data</em>.</p>
+<p>As a real example, let’s take a real dataset and split it in two. The following code loads a datset of <code class="docutils literal notranslate"><span class="pre">tensile_strength</span></code> values and splits the full dataset into two smaller datasets. We could have seen either of these two datasets, had we gathered half as many values.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">grama.data</span> <span class="kn">import</span> <span class="n">df_shewhart</span>
+
+<span class="p">(</span>
+    <span class="n">df_shewhart</span>
+    <span class="o">&gt;&gt;</span> <span class="n">gr</span><span class="o">.</span><span class="n">tf_mutate</span><span class="p">(</span><span class="n">dataset</span><span class="o">=</span><span class="n">DF</span><span class="o">.</span><span class="n">index</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="o">&gt;&gt;</span> <span class="n">gr</span><span class="o">.</span><span class="n">ggplot</span><span class="p">(</span><span class="n">gr</span><span class="o">.</span><span class="n">aes</span><span class="p">(</span><span class="s2">&quot;tensile_strength&quot;</span><span class="p">))</span>
+    <span class="o">+</span> <span class="n">gr</span><span class="o">.</span><span class="n">geom_freqpoly</span><span class="p">(</span><span class="n">gr</span><span class="o">.</span><span class="n">aes</span><span class="p">(</span><span class="n">linetype</span><span class="o">=</span><span class="s2">&quot;factor(dataset)&quot;</span><span class="p">),</span> <span class="n">bins</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+    <span class="o">+</span> <span class="n">gr</span><span class="o">.</span><span class="n">scale_linetype_discrete</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;dataset&quot;</span><span class="p">)</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/0263e6666d26d529a9c3cc1c08f6dd7fed6ef331a6b5be447527e5ff91f394d8.png" src="../_images/0263e6666d26d529a9c3cc1c08f6dd7fed6ef331a6b5be447527e5ff91f394d8.png" />
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;ggplot: (8782076094004)&gt;
+</pre></div>
+</div>
+</div>
+</div>
+<p>We would draw different conclusions from these two different datasets. Dataset 1 has several observations with values over <code class="docutils literal notranslate"><span class="pre">~37,500</span></code> psi. However, Dataset 2 has no observations with values this large. In practice, we would have access to just one dataset; if we happened to have Dataset 2, we might assume that values of <code class="docutils literal notranslate"><span class="pre">tensile_strength</span></code> greater than <code class="docutils literal notranslate"><span class="pre">37,500</span></code> psi do not occur. Part of thinking statistically is keeping in mind possibilities like the one we see above: <em>we might have seen other data</em>.</p>
+<p>To underscore this idea of limited data, let’s look at a simulated example. The following code defines a distribution with a specified mean.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">## NOTE: No need to edit; run and inspect</span>
+<span class="c1"># Define an uncertain quantity</span>
+<span class="n">mg_test</span> <span class="o">=</span> <span class="n">gr</span><span class="o">.</span><span class="n">marg_mom</span><span class="p">(</span>
+    <span class="s2">&quot;uniform&quot;</span><span class="p">,</span> 
+    <span class="n">mean</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> 
+    <span class="n">sd</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">mg_test</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/Users/zach/Git/py_grama/grama/marginals.py:336: RuntimeWarning: divide by zero encountered in double_scalars
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(+0) uniform, {&#39;mean&#39;: &#39;0.000e+00&#39;, &#39;s.d.&#39;: &#39;1.000e+00&#39;, &#39;COV&#39;: inf, &#39;skew.&#39;: 0.0, &#39;kurt.&#39;: 1.8}
+</pre></div>
+</div>
+</div>
+</div>
+<p>From the marginal summary, we can see that the mean of the distribution is <code class="docutils literal notranslate"><span class="pre">0</span></code>. However, if we have limited data then the mean of that sample will generally not be exactly zero:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">## NOTE: No need to edit; run and inspect</span>
+<span class="c1"># The true mean == 0; let&#39;s see what a limited sample gives</span>
+<span class="n">gr</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">mg_test</span><span class="o">.</span><span class="n">r</span><span class="p">(</span><span class="mi">10</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.20323196014235362
+</pre></div>
+</div>
+</div>
+</div>
+<p>Limited data leads to a form of error called <em>sampling error</em>. In practice we <em>almost always</em> have limited data, so sampling error is an unavoidable reality.</p>
+</section>
+<section id="sampling-distribution">
+<h2>Sampling Distribution<a class="headerlink" href="#sampling-distribution" title="Permalink to this heading">#</a></h2>
+<p>Let’s imagine for a moment that we <em>did</em> carry out data collection multiple times. Let’s illustrate this by splitting the tensile strength dataset into six separate subsets.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Compute a set of estimates</span>
+<span class="p">(</span>
+    <span class="n">df_shewhart</span>
+    <span class="c1"># Split into 6 groups</span>
+    <span class="o">&gt;&gt;</span> <span class="n">gr</span><span class="o">.</span><span class="n">tf_mutate</span><span class="p">(</span><span class="n">dataset</span><span class="o">=</span><span class="n">DF</span><span class="o">.</span><span class="n">specimen</span> <span class="o">%</span> <span class="mi">6</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="c1"># Compute the mean and variance over each sample</span>
+    <span class="o">&gt;&gt;</span> <span class="n">gr</span><span class="o">.</span><span class="n">tf_group_by</span><span class="p">(</span><span class="n">DF</span><span class="o">.</span><span class="n">dataset</span><span class="p">)</span>
+    <span class="o">&gt;&gt;</span> <span class="n">gr</span><span class="o">.</span><span class="n">tf_summarize</span><span class="p">(</span>
+        <span class="n">tys_mu</span><span class="o">=</span><span class="n">gr</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">DF</span><span class="o">.</span><span class="n">tensile_strength</span><span class="p">),</span>
+        <span class="n">n</span><span class="o">=</span><span class="n">gr</span><span class="o">.</span><span class="n">n</span><span class="p">(</span><span class="n">DF</span><span class="o">.</span><span class="n">index</span><span class="p">),</span>
+    <span class="p">)</span>
+    <span class="o">&gt;&gt;</span> <span class="n">gr</span><span class="o">.</span><span class="n">tf_ungroup</span><span class="p">()</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>dataset</th>
+      <th>tys_mu</th>
+      <th>n</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1</td>
+      <td>31936.6</td>
+      <td>10</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2</td>
+      <td>30784.4</td>
+      <td>10</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>3</td>
+      <td>32413.4</td>
+      <td>10</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>4</td>
+      <td>35654.0</td>
+      <td>10</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>5</td>
+      <td>28975.0</td>
+      <td>10</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>6</td>
+      <td>31452.8</td>
+      <td>10</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>Note that the mean <code class="docutils literal notranslate"><span class="pre">tys_mu</span></code> is <em>different</em> for each of the datasets. This is an example of <em>sampling error</em> (also called <em>sampling variability</em>). Statisticians quantify sampling error by defining a <em>population</em> from which a smaller dataset is drawn. This smaller dataset is called a <em>sample</em>. In the <code class="docutils literal notranslate"><span class="pre">tensile_strength</span></code> case, the population is the <em>infinite</em> number of parts that could be manufactured according to the same process. Any time we make a finite number of parts (any real batch of parts!), we have a limited sample from the manufacturing process.</p>
+<div class="admonition-sample-vs-population admonition">
+<p class="admonition-title">Sample vs Population</p>
+<p>A <em>population</em> is the full set of values we are interested in. A <em>sample</em> is a small subset from that population. Since the sample is not the population, it has less information than the full population. A mismatch between information in the population and information in the sample (e.g., the population mean vs sample mean) is called <em>sampling error</em>.</p>
+</div>
+<p>The <em>sampling distribution</em> is a conceptual tool used to quantify sampling variability in a chosen summary. Imagine that we repeatedly draw <strong>random</strong> samples (small datasets) of the same size from the target population. We then compute our chosen summary.</p>
+<p>The following code defines a population <code class="docutils literal notranslate"><span class="pre">mg_uniform</span></code>, draws samples of size <code class="docutils literal notranslate"><span class="pre">n=10</span></code>, and computes the sample mean. The true mean is <code class="docutils literal notranslate"><span class="pre">mean</span> <span class="pre">==</span> <span class="pre">0</span></code>; the variability we see around this value is sampling variability.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Define a uniform distribution</span>
+<span class="c1"># NOTE: The true mean is set here: `mean=0`</span>
+<span class="n">mg_uniform</span> <span class="o">=</span> <span class="n">gr</span><span class="o">.</span><span class="n">marg_mom</span><span class="p">(</span><span class="s2">&quot;uniform&quot;</span><span class="p">,</span> <span class="n">mean</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">sd</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="c1"># Simulated example</span>
+<span class="n">n</span> <span class="o">=</span> <span class="mi">10</span>   <span class="c1"># Sample size</span>
+<span class="n">m</span> <span class="o">=</span> <span class="mi">1000</span> <span class="c1"># Number of samples</span>
+
+<span class="p">(</span>
+    <span class="c1"># Generate m=1000 samples of size n=10</span>
+    <span class="n">gr</span><span class="o">.</span><span class="n">df_make</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">mg_uniform</span><span class="o">.</span><span class="n">r</span><span class="p">(</span><span class="n">n</span> <span class="o">*</span> <span class="n">m</span><span class="p">))</span>
+    <span class="o">&gt;&gt;</span> <span class="n">gr</span><span class="o">.</span><span class="n">tf_mutate</span><span class="p">(</span><span class="n">group</span><span class="o">=</span><span class="n">DF</span><span class="o">.</span><span class="n">index</span> <span class="o">%</span> <span class="n">m</span><span class="p">)</span>
+    <span class="c1"># Compute mean according to each sample</span>
+    <span class="o">&gt;&gt;</span> <span class="n">gr</span><span class="o">.</span><span class="n">tf_group_by</span><span class="p">(</span><span class="n">DF</span><span class="o">.</span><span class="n">group</span><span class="p">)</span>
+    <span class="o">&gt;&gt;</span> <span class="n">gr</span><span class="o">.</span><span class="n">tf_summarize</span><span class="p">(</span><span class="n">x_mean</span><span class="o">=</span><span class="n">gr</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">DF</span><span class="o">.</span><span class="n">x</span><span class="p">))</span>
+    <span class="o">&gt;&gt;</span> <span class="n">gr</span><span class="o">.</span><span class="n">tf_ungroup</span><span class="p">()</span>
+    <span class="c1"># Visualize</span>
+    <span class="o">&gt;&gt;</span> <span class="n">gr</span><span class="o">.</span><span class="n">ggplot</span><span class="p">(</span><span class="n">gr</span><span class="o">.</span><span class="n">aes</span><span class="p">(</span><span class="s2">&quot;x_mean&quot;</span><span class="p">))</span>
+    <span class="o">+</span> <span class="n">gr</span><span class="o">.</span><span class="n">geom_histogram</span><span class="p">(</span><span class="n">bins</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
+    <span class="o">+</span> <span class="n">gr</span><span class="o">.</span><span class="n">labs</span><span class="p">(</span>
+        <span class="n">x</span><span class="o">=</span><span class="s2">&quot;Sample Mean&quot;</span><span class="p">,</span>
+        <span class="n">y</span><span class="o">=</span><span class="s2">&quot;Count&quot;</span><span class="p">,</span>
+        <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Histogram of the Sample Mean&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/d4333f37f41d516a35059ebaf21c969f742d39cc2ea201a827a92630cf3b6e70.png" src="../_images/d4333f37f41d516a35059ebaf21c969f742d39cc2ea201a827a92630cf3b6e70.png" />
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;ggplot: (8782076781294)&gt;
+</pre></div>
+</div>
+</div>
+</div>
+<p>Sampling distributions are not limited to the mean! The following code defines the same population <code class="docutils literal notranslate"><span class="pre">mg_uniform</span></code>, the same sample size <code class="docutils literal notranslate"><span class="pre">n=10</span></code>, but computes the probability that <code class="docutils literal notranslate"><span class="pre">X</span> <span class="pre">&lt;=</span> <span class="pre">0</span></code> rather than the mean. Note that the resulting sampling distribution looks quite different than the previous example.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Define a uniform distribution</span>
+<span class="c1"># NOTE: The true mean is set here: `mean=0`</span>
+<span class="n">mg_uniform</span> <span class="o">=</span> <span class="n">gr</span><span class="o">.</span><span class="n">marg_mom</span><span class="p">(</span><span class="s2">&quot;uniform&quot;</span><span class="p">,</span> <span class="n">mean</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">sd</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="c1"># Simulated example</span>
+<span class="n">n</span> <span class="o">=</span> <span class="mi">10</span>   <span class="c1"># Sample size</span>
+<span class="n">m</span> <span class="o">=</span> <span class="mi">1000</span> <span class="c1"># Number of samples</span>
+
+<span class="p">(</span>
+    <span class="c1"># Generate m=1000 samples of size n=10</span>
+    <span class="n">gr</span><span class="o">.</span><span class="n">df_make</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">mg_uniform</span><span class="o">.</span><span class="n">r</span><span class="p">(</span><span class="n">n</span> <span class="o">*</span> <span class="n">m</span><span class="p">))</span>
+    <span class="o">&gt;&gt;</span> <span class="n">gr</span><span class="o">.</span><span class="n">tf_mutate</span><span class="p">(</span><span class="n">group</span><span class="o">=</span><span class="n">DF</span><span class="o">.</span><span class="n">index</span> <span class="o">%</span> <span class="n">m</span><span class="p">)</span>
+    <span class="c1"># Compute mean according to each sample</span>
+    <span class="o">&gt;&gt;</span> <span class="n">gr</span><span class="o">.</span><span class="n">tf_group_by</span><span class="p">(</span><span class="n">DF</span><span class="o">.</span><span class="n">group</span><span class="p">)</span>
+    <span class="o">&gt;&gt;</span> <span class="n">gr</span><span class="o">.</span><span class="n">tf_summarize</span><span class="p">(</span><span class="n">pr_lo</span><span class="o">=</span><span class="n">gr</span><span class="o">.</span><span class="n">pr</span><span class="p">(</span><span class="n">DF</span><span class="o">.</span><span class="n">x</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">))</span>
+    <span class="o">&gt;&gt;</span> <span class="n">gr</span><span class="o">.</span><span class="n">tf_ungroup</span><span class="p">()</span>
+    <span class="c1"># Visualize</span>
+    <span class="o">&gt;&gt;</span> <span class="n">gr</span><span class="o">.</span><span class="n">ggplot</span><span class="p">(</span><span class="n">gr</span><span class="o">.</span><span class="n">aes</span><span class="p">(</span><span class="s2">&quot;pr_lo&quot;</span><span class="p">))</span>
+    <span class="o">+</span> <span class="n">gr</span><span class="o">.</span><span class="n">geom_histogram</span><span class="p">(</span><span class="n">bins</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
+    <span class="o">+</span> <span class="n">gr</span><span class="o">.</span><span class="n">labs</span><span class="p">(</span>
+        <span class="n">x</span><span class="o">=</span><span class="s2">&quot;Sample Probability&quot;</span><span class="p">,</span>
+        <span class="n">y</span><span class="o">=</span><span class="s2">&quot;Count&quot;</span><span class="p">,</span>
+        <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Histogram of the Sample Pr[X &lt;= 0]&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/a5c33cf5c048bf3719a4e422e567b02c7f0b731f1ecc2430f753e6d95831fc0d.png" src="../_images/a5c33cf5c048bf3719a4e422e567b02c7f0b731f1ecc2430f753e6d95831fc0d.png" />
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;ggplot: (8782076769856)&gt;
+</pre></div>
+</div>
+</div>
+</div>
+<div class="admonition-the-sampling-distribution-is-based-on-population-sample-size-and-summary admonition">
+<p class="admonition-title">The Sampling Distribution is based on Population, Sample Size, and Summary</p>
+<p>The sampling distribution is a result of three ingredients: 1. The target population, 2. The chosen sample size, and 3. The chosen summary. The sampling distribution also assumes that each sample is drawn randomly from the population.</p>
+</div>
+<p>The sampling distribution is what we would observe under <em>repeated</em> data collection. However, gathering multiple datasets of the same size and computing independent summaries would be a highly inefficient way to use data! Instead, we can use the <em>central limit theorem</em> as a means to approximate a sampling distribution using <em>just one dataset</em>.</p>
+</section>
+<section id="central-limit-theorem-clt">
+<h2>Central Limit Theorem (CLT)<a class="headerlink" href="#central-limit-theorem-clt" title="Permalink to this heading">#</a></h2>
+<p>The central limit theorem (CLT) is most easily stated in terms of the sample mean. Let <span class="math notranslate nohighlight">\(X \sim \rho\)</span> be a random draw from a population with finite mean <span class="math notranslate nohighlight">\(\mu\)</span> and variance <span class="math notranslate nohighlight">\(\sigma^2\)</span>. The sample mean is denoted <span class="math notranslate nohighlight">\(\overline{X}_n\)</span> and is defined as</p>
+<div class="math notranslate nohighlight">
+\[\overline{X}_n = \frac{1}{n} \sum_{i=1}^n X_i.\]</div>
+<p>Under independent, repeated observations from the same distribution <span class="math notranslate nohighlight">\(X_i \sim \rho\)</span>, the central limit theorem states that <span class="math notranslate nohighlight">\(\overline{X}_n\)</span> becomes increasingly normal in its distribution as <span class="math notranslate nohighlight">\(n\)</span> is increased, regardless of the original distribution <span class="math notranslate nohighlight">\(\rho\)</span>. That is</p>
+<div class="math notranslate nohighlight">
+\[\overline{X}_n \stackrel{d}{\to} N(\mu, \sigma^2/n),\]</div>
+<p>where <span class="math notranslate nohighlight">\(\stackrel{d}{\to}\)</span> means “convergence in distribution.” The CLT is useful because it gives us a way to quantify sampling error: Since the CLT holds regardless of where the data came from <span class="math notranslate nohighlight">\(X \sim \rho\)</span>—so long as <span class="math notranslate nohighlight">\(|\mu| &lt; \infty, \sigma &lt; \infty\)</span>—then we can characterize the sampling error in the sample mean <span class="math notranslate nohighlight">\(\overline{X}_n\)</span>.</p>
+<section id="q1-study-clt-convergence-behavior">
+<h3><strong>q1</strong> Study CLT convergence behavior<a class="headerlink" href="#q1-study-clt-convergence-behavior" title="Permalink to this heading">#</a></h3>
+<p>Adjust the sample size <code class="docutils literal notranslate"><span class="pre">n</span></code> below, run the code to inspect the results each time, then answer the questions under <em>observations</em> below.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">## TODO: Adjust the sample size n</span>
+<span class="n">n</span> <span class="o">=</span> <span class="mi">1</span> <span class="c1"># Sample size</span>
+
+<span class="c1">## NOTE: No need to edit</span>
+<span class="c1"># Draw a large sample</span>
+<span class="n">df_sample</span> <span class="o">=</span> <span class="n">gr</span><span class="o">.</span><span class="n">df_make</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">mg_test</span><span class="o">.</span><span class="n">r</span><span class="p">(</span><span class="mi">5000</span><span class="p">))</span>
+
+<span class="p">(</span>
+    <span class="c1"># Compute mean within each group</span>
+    <span class="n">df_sample</span>
+    <span class="o">&gt;&gt;</span> <span class="n">gr</span><span class="o">.</span><span class="n">tf_mutate</span><span class="p">(</span><span class="n">i</span><span class="o">=</span><span class="n">DF</span><span class="o">.</span><span class="n">index</span> <span class="o">//</span> <span class="n">n</span><span class="p">)</span>
+    <span class="o">&gt;&gt;</span> <span class="n">gr</span><span class="o">.</span><span class="n">tf_group_by</span><span class="p">(</span><span class="n">DF</span><span class="o">.</span><span class="n">i</span><span class="p">)</span>
+    <span class="o">&gt;&gt;</span> <span class="n">gr</span><span class="o">.</span><span class="n">tf_summarize</span><span class="p">(</span>
+        <span class="n">x_mean</span><span class="o">=</span><span class="n">gr</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">DF</span><span class="o">.</span><span class="n">x</span><span class="p">)</span>
+    <span class="p">)</span>
+    <span class="o">&gt;&gt;</span> <span class="n">gr</span><span class="o">.</span><span class="n">tf_ungroup</span><span class="p">()</span>
+    
+    <span class="c1"># Visualize</span>
+    <span class="o">&gt;&gt;</span> <span class="n">gr</span><span class="o">.</span><span class="n">ggplot</span><span class="p">(</span><span class="n">gr</span><span class="o">.</span><span class="n">aes</span><span class="p">(</span><span class="s2">&quot;x_mean&quot;</span><span class="p">))</span>
+    <span class="o">+</span> <span class="n">gr</span><span class="o">.</span><span class="n">geom_histogram</span><span class="p">(</span><span class="n">gr</span><span class="o">.</span><span class="n">aes</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="s2">&quot;stat(density)&quot;</span><span class="p">),</span> <span class="n">bins</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
+    <span class="o">+</span> <span class="n">gr</span><span class="o">.</span><span class="n">geom_line</span><span class="p">(</span>
+        <span class="n">data</span><span class="o">=</span><span class="n">gr</span><span class="o">.</span><span class="n">df_make</span><span class="p">(</span><span class="n">x_mean</span><span class="o">=</span><span class="n">gr</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mf">1.5</span><span class="p">,</span> <span class="o">+</span><span class="mf">1.5</span><span class="p">,</span> <span class="mi">100</span><span class="p">))</span>
+        <span class="o">&gt;&gt;</span> <span class="n">gr</span><span class="o">.</span><span class="n">tf_mutate</span><span class="p">(</span>
+            <span class="n">d</span><span class="o">=</span><span class="n">gr</span><span class="o">.</span><span class="n">marg_mom</span><span class="p">(</span><span class="s2">&quot;norm&quot;</span><span class="p">,</span> <span class="n">mean</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">sd</span><span class="o">=</span><span class="mi">1</span><span class="o">/</span><span class="n">gr</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">n</span><span class="p">))</span><span class="o">.</span><span class="n">d</span><span class="p">(</span><span class="n">DF</span><span class="o">.</span><span class="n">x_mean</span><span class="p">)</span>
+        <span class="p">),</span>
+        <span class="n">mapping</span><span class="o">=</span><span class="n">gr</span><span class="o">.</span><span class="n">aes</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="s2">&quot;d&quot;</span><span class="p">),</span>
+    <span class="p">)</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/426826030cd068736ef955a1ac464e917a84be49a80655fe629021be48d4f221.png" src="../_images/426826030cd068736ef955a1ac464e917a84be49a80655fe629021be48d4f221.png" />
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;ggplot: (8782085134111)&gt;
+</pre></div>
+</div>
+</div>
+</div>
+<p><em>Observations</em></p>
+<ul class="simple">
+<li><p>Around what value of <span class="math notranslate nohighlight">\(n\)</span> does the histogram start to look like the normal distribution (black curve)?</p>
+<ul>
+<li><p>Around values of <span class="math notranslate nohighlight">\(n &gt; 10\)</span> the histogram starts to look like a normal distribution.</p></li>
+</ul>
+</li>
+<li><p>How does the “width” of the histogram change with <span class="math notranslate nohighlight">\(n\)</span>?</p>
+<ul>
+<li><p>The “width” of the histogram tends to shrink with large <span class="math notranslate nohighlight">\(n\)</span>, but it shrinks very slowly.</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+<section id="confidence-intervals-ci">
+<h2>Confidence Intervals (CI)<a class="headerlink" href="#confidence-intervals-ci" title="Permalink to this heading">#</a></h2>
+<p>Since any estimated quantity has sampling error, it is common to report estimated values along with a <em>confidence interval</em>. A confidence interval (CI) is an expression of <em>uncertainty</em>; it will tend to be wider when the sampling error is larger. For the moment, let’s talk about how to <em>compute</em> a confidence interval; we’ll discuss how to <em>interpret</em> a confidence interval in a bit.</p>
+<p>The CLT-based confidence interval for the mean is given by</p>
+<div class="math notranslate nohighlight">
+\[[\overline{X}_n - z_C \sigma/\sqrt{n}, \overline{X}_n + z_C \sigma/\sqrt{n}]\]</div>
+<p>where <span class="math notranslate nohighlight">\(z_C\)</span> is the relevant quantile of a standard normal distribution. This is based on capturing a specified fraction <span class="math notranslate nohighlight">\(C\)</span> of the distribution between the interval bounds. For instance, the following code computes <span class="math notranslate nohighlight">\(z_C\)</span> for <span class="math notranslate nohighlight">\(C = 0.99\)</span>.</p>
+<div class="admonition-terminology-point-estimate-vs-confidence-interval admonition">
+<p class="admonition-title">Terminology: Point Estimate vs Confidence Interval</p>
+<p>A single value like a sample mean <span class="math notranslate nohighlight">\(\overline{X}_n\)</span> is called a <em>point estimate</em>, while a confidence interval is defined by two values (the interval endpoints).</p>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">## NOTE: No need to edit, this computes the relevant z_C value</span>
+<span class="n">C</span> <span class="o">=</span> <span class="mf">0.99</span> <span class="c1"># 99% confidence level</span>
+<span class="n">mg_standard</span> <span class="o">=</span> <span class="n">gr</span><span class="o">.</span><span class="n">marg_mom</span><span class="p">(</span><span class="s2">&quot;norm&quot;</span><span class="p">,</span> <span class="n">mean</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">sd</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">z_C</span> <span class="o">=</span> <span class="n">mg_standard</span><span class="o">.</span><span class="n">q</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">C</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;z_C = </span><span class="si">{0:4.3f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">z_C</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>z_C = 2.576
+</pre></div>
+</div>
+</div>
+</div>
+<p>You can compute these CI bounds manually. However, the helper functions <code class="docutils literal notranslate"><span class="pre">gr.mean_lo()</span></code> and <code class="docutils literal notranslate"><span class="pre">gr.mean_up()</span></code> automate these calculations. For both functions, you can adjust the confidence level <code class="docutils literal notranslate"><span class="pre">C</span></code> with the <code class="docutils literal notranslate"><span class="pre">alpha</span></code> parameter.</p>
+<section id="q2-compute-a-confidence-interval">
+<h3><strong>q2</strong> Compute a confidence interval<a class="headerlink" href="#q2-compute-a-confidence-interval" title="Permalink to this heading">#</a></h3>
+<p>Use the helper functions <code class="docutils literal notranslate"><span class="pre">gr.mean_lo()</span></code> and <code class="docutils literal notranslate"><span class="pre">gr.mean_up()</span></code> to compute confidence limits for the mean.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">## TODO: Compute confidence limits for the mean;</span>
+<span class="n">df_ci</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">gr</span><span class="o">.</span><span class="n">df_make</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">mg_test</span><span class="o">.</span><span class="n">r</span><span class="p">(</span><span class="mi">10</span><span class="p">))</span>
+    <span class="o">&gt;&gt;</span> <span class="n">gr</span><span class="o">.</span><span class="n">tf_summarize</span><span class="p">(</span>
+        <span class="n">x_lo</span><span class="o">=</span><span class="n">gr</span><span class="o">.</span><span class="n">mean_lo</span><span class="p">(</span><span class="n">DF</span><span class="o">.</span><span class="n">x</span><span class="p">),</span>
+
+        <span class="n">x_mean</span><span class="o">=</span><span class="n">gr</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">DF</span><span class="o">.</span><span class="n">x</span><span class="p">),</span>
+        <span class="n">x_up</span><span class="o">=</span><span class="n">gr</span><span class="o">.</span><span class="n">mean_up</span><span class="p">(</span><span class="n">DF</span><span class="o">.</span><span class="n">x</span><span class="p">),</span>
+
+    <span class="p">)</span>
+<span class="p">)</span>
+
+<span class="c1">## NOTE: Use this to check your work</span>
+<span class="k">assert</span> \
+    <span class="s2">&quot;x_lo&quot;</span> <span class="ow">in</span> <span class="n">df_ci</span><span class="o">.</span><span class="n">columns</span><span class="p">,</span> \
+    <span class="s2">&quot;You must compute x_lo&quot;</span>
+<span class="k">assert</span> \
+    <span class="s2">&quot;x_up&quot;</span> <span class="ow">in</span> <span class="n">df_ci</span><span class="o">.</span><span class="n">columns</span><span class="p">,</span> \
+    <span class="s2">&quot;You must compute x_up&quot;</span>
+<span class="k">assert</span> \
+    <span class="n">df_ci</span><span class="o">.</span><span class="n">x_lo</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">df_ci</span><span class="o">.</span><span class="n">x_mean</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> \
+    <span class="s2">&quot;x_lo should be smaller than x_mean&quot;</span>
+<span class="k">assert</span> \
+    <span class="n">df_ci</span><span class="o">.</span><span class="n">x_mean</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">df_ci</span><span class="o">.</span><span class="n">x_up</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> \
+    <span class="s2">&quot;x_mean should be smaller than x_up&quot;</span>
+
+<span class="n">df_ci</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>x_lo</th>
+      <th>x_mean</th>
+      <th>x_up</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>-0.540023</td>
+      <td>0.210576</td>
+      <td>0.961175</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</section>
+<section id="q3-study-the-ci-width">
+<h3><strong>q3</strong> Study the CI width<a class="headerlink" href="#q3-study-the-ci-width" title="Permalink to this heading">#</a></h3>
+<p>The following code creates confidence intervals for samples of different sizes <span class="math notranslate nohighlight">\(n\)</span>. Run the following code, inspect the results, and answer the questions under <em>observations</em> below.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">## NOTE: No need to edit</span>
+<span class="n">df_sweep</span> <span class="o">=</span> <span class="n">gr</span><span class="o">.</span><span class="n">df_grid</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="mi">80</span><span class="p">,</span> <span class="mi">160</span><span class="p">]:</span>
+    <span class="n">df_sweep</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">df_sweep</span>
+        <span class="o">&gt;&gt;</span> <span class="n">gr</span><span class="o">.</span><span class="n">tf_bind_rows</span><span class="p">(</span>
+            <span class="n">gr</span><span class="o">.</span><span class="n">df_make</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">mg_test</span><span class="o">.</span><span class="n">r</span><span class="p">(</span><span class="n">i</span><span class="p">))</span>
+            <span class="o">&gt;&gt;</span> <span class="n">gr</span><span class="o">.</span><span class="n">tf_summarize</span><span class="p">(</span>
+                <span class="n">x_lo</span><span class="o">=</span><span class="n">gr</span><span class="o">.</span><span class="n">mean_lo</span><span class="p">(</span><span class="n">DF</span><span class="o">.</span><span class="n">x</span><span class="p">),</span>
+                <span class="n">x_up</span><span class="o">=</span><span class="n">gr</span><span class="o">.</span><span class="n">mean_up</span><span class="p">(</span><span class="n">DF</span><span class="o">.</span><span class="n">x</span><span class="p">),</span>
+            <span class="p">)</span>
+            <span class="o">&gt;&gt;</span> <span class="n">gr</span><span class="o">.</span><span class="n">tf_mutate</span><span class="p">(</span>
+                <span class="n">ci_width</span><span class="o">=</span><span class="n">DF</span><span class="o">.</span><span class="n">x_up</span> <span class="o">-</span> <span class="n">DF</span><span class="o">.</span><span class="n">x_lo</span><span class="p">,</span>
+                <span class="n">n</span><span class="o">=</span><span class="n">i</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
+    <span class="p">)</span>
+    
+<span class="p">(</span>
+    <span class="n">df_sweep</span>
+    <span class="o">&gt;&gt;</span> <span class="n">gr</span><span class="o">.</span><span class="n">ggplot</span><span class="p">(</span><span class="n">gr</span><span class="o">.</span><span class="n">aes</span><span class="p">(</span><span class="s2">&quot;n&quot;</span><span class="p">,</span> <span class="s2">&quot;ci_width&quot;</span><span class="p">))</span>
+    <span class="o">+</span> <span class="n">gr</span><span class="o">.</span><span class="n">geom_line</span><span class="p">()</span>
+    <span class="o">+</span> <span class="n">gr</span><span class="o">.</span><span class="n">labs</span><span class="p">(</span>
+        <span class="n">x</span><span class="o">=</span><span class="s2">&quot;Sample Size n&quot;</span><span class="p">,</span>
+        <span class="n">y</span><span class="o">=</span><span class="s2">&quot;CI Width&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/4154ff31ecd744e5881c0623a5faf804c49b22abf3df40e50bbdc8e331a37957.png" src="../_images/4154ff31ecd744e5881c0623a5faf804c49b22abf3df40e50bbdc8e331a37957.png" />
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;ggplot: (8782085128695)&gt;
+</pre></div>
+</div>
+</div>
+</div>
+<p><em>Observations</em></p>
+<ul class="simple">
+<li><p>Compare the CI width behavior (figure immediately above) with the definition given earlier. What explains the curve above?</p>
+<ul>
+<li><p>The CI expression contains a <span class="math notranslate nohighlight">\(\sigma/\sqrt{n}\)</span> term; the <span class="math notranslate nohighlight">\(1/\sqrt{n}\)</span> behavior is what we see above.</p></li>
+</ul>
+</li>
+<li><p>To halve the CI width, how would you need to change the sample size?</p>
+<ul>
+<li><p>To halve the CI width, you would need to quadruple the sample size; note that the width goes as <span class="math notranslate nohighlight">\(1/\sqrt{n}\)</span>, thus <span class="math notranslate nohighlight">\(1/\sqrt{4n} = 1/(2\sqrt{n})\)</span>.</p></li>
+</ul>
+</li>
+</ul>
+<!-- solution-end --></section>
+</section>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="interpreting-confidence-intervals">
+<h1>Interpreting Confidence Intervals<a class="headerlink" href="#interpreting-confidence-intervals" title="Permalink to this heading">#</a></h1>
+<p>Confidence intervals are constructed in a way that seeks to <em>include</em> the true value that we seek to estimate. However, the nature of uncertainty means we need to exercise care when interpreting a confidence interval.</p>
+<section id="golden-rule-of-confidence-intervals">
+<h2>Golden Rule of Confidence Intervals<a class="headerlink" href="#golden-rule-of-confidence-intervals" title="Permalink to this heading">#</a></h2>
+<div class="admonition-the-golden-rule-for-interpreting-confidence-intervals admonition">
+<p class="admonition-title">The “Golden Rule” for interpreting Confidence Intervals</p>
+<p>When interpreting a confidence interval, we should assume the true value could be anywhere inside the interval.</p>
+</div>
+<p>Interpreting a CI as a range of possibilities helps us “hedge our bets”. The point estimate may suggest a favorable conclusion, but if the CI is wide, then an unfavorable conclusion may also be possible.</p>
+<p>If a CI does not allow you to exclude an unfavorable possibility, it is an indication that you should gather another <em>larger</em> sample in order to study the same problem with greater statistical precision. You’ll practice these ideas in the following exercises.</p>
+<div class="warning admonition">
+<p class="admonition-title">Confidence in <em>procedure</em>, not in the interval</p>
+<p>A subtle point about confidence intervals is that our confidence is in the long-run properties of constructing <em>many</em> intervals, not in any <em>single</em> interval. Any individual interval either does or does not include its true value: the “probability” for a single interval is either <code class="docutils literal notranslate"><span class="pre">0</span></code> or <code class="docutils literal notranslate"><span class="pre">1</span></code>.</p>
+</div>
+<section id="q4-interpret-these-intervals">
+<h3><strong>q4</strong> Interpret these intervals<a class="headerlink" href="#q4-interpret-these-intervals" title="Permalink to this heading">#</a></h3>
+<p>Study the following intervals, answer the questions under <em>observations</em> below.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">## NOTE: No need to edit; run and inspect</span>
+<span class="p">(</span>
+    <span class="n">gr</span><span class="o">.</span><span class="n">df_make</span><span class="p">(</span>
+        <span class="n">case</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;A&quot;</span><span class="p">,</span> <span class="s2">&quot;B&quot;</span><span class="p">,</span> <span class="s2">&quot;C&quot;</span><span class="p">,</span> <span class="s2">&quot;D&quot;</span><span class="p">],</span>
+        <span class="n">x_lo</span><span class="o">=</span><span class="p">[</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span>   <span class="mi">1</span><span class="p">,</span>  <span class="o">-</span><span class="mi">2</span><span class="p">,</span>  <span class="o">-</span><span class="mi">4</span><span class="p">],</span>
+        <span class="n">x_mu</span><span class="o">=</span><span class="p">[</span>  <span class="mi">1</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">,</span>  <span class="o">-</span><span class="mi">1</span><span class="p">,</span>  <span class="o">-</span><span class="mi">3</span><span class="p">],</span>
+        <span class="n">x_up</span><span class="o">=</span><span class="p">[</span>  <span class="mi">4</span><span class="p">,</span>   <span class="mi">2</span><span class="p">,</span>   <span class="mi">1</span><span class="p">,</span>  <span class="o">-</span><span class="mi">1</span><span class="p">],</span>
+    <span class="p">)</span>
+    <span class="o">&gt;&gt;</span> <span class="n">gr</span><span class="o">.</span><span class="n">ggplot</span><span class="p">(</span><span class="n">gr</span><span class="o">.</span><span class="n">aes</span><span class="p">(</span><span class="s2">&quot;case&quot;</span><span class="p">))</span>
+    <span class="o">+</span> <span class="n">gr</span><span class="o">.</span><span class="n">geom_errorbar</span><span class="p">(</span><span class="n">gr</span><span class="o">.</span><span class="n">aes</span><span class="p">(</span><span class="n">ymin</span><span class="o">=</span><span class="s2">&quot;x_lo&quot;</span><span class="p">,</span> <span class="n">ymax</span><span class="o">=</span><span class="s2">&quot;x_up&quot;</span><span class="p">))</span>
+    <span class="o">+</span> <span class="n">gr</span><span class="o">.</span><span class="n">geom_point</span><span class="p">(</span><span class="n">gr</span><span class="o">.</span><span class="n">aes</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="s2">&quot;x_mu&quot;</span><span class="p">))</span>
+    <span class="o">+</span> <span class="n">gr</span><span class="o">.</span><span class="n">geom_hline</span><span class="p">(</span><span class="n">yintercept</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">linetype</span><span class="o">=</span><span class="s2">&quot;dashed&quot;</span><span class="p">)</span>
+    <span class="o">+</span> <span class="n">gr</span><span class="o">.</span><span class="n">coord_flip</span><span class="p">()</span>
+    <span class="o">+</span> <span class="n">gr</span><span class="o">.</span><span class="n">labs</span><span class="p">(</span>
+        <span class="n">y</span><span class="o">=</span><span class="s2">&quot;Value&quot;</span><span class="p">,</span>
+        <span class="n">x</span><span class="o">=</span><span class="s2">&quot;Case&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/e75215ec9532e809772e98f2e2c54331b0231200bdcbeaad8e9bcb0fa003875f.png" src="../_images/e75215ec9532e809772e98f2e2c54331b0231200bdcbeaad8e9bcb0fa003875f.png" />
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;ggplot: (8782105817853)&gt;
+</pre></div>
+</div>
+</div>
+</div>
+<p><em>Observations</em></p>
+<ul class="simple">
+<li><p>Is Case A greater than zero?</p>
+<ul>
+<li><p>Unclear; the confidence interval includes zero, so A could very well be negative.</p></li>
+</ul>
+</li>
+<li><p>Is Case B greater than zero?</p>
+<ul>
+<li><p>Most likely yes; the entire confidence interval is greater than zero.</p></li>
+</ul>
+</li>
+<li><p>Is Case C less than zero?</p>
+<ul>
+<li><p>Unclear; the confidence interval includes zero, so C could very well be positive.</p></li>
+</ul>
+</li>
+<li><p>Is Case D less than zero?</p>
+<ul>
+<li><p>Most likely yes; the entire confidence interval is less than zero.</p></li>
+</ul>
+</li>
+</ul>
+<!-- solution-end --></section>
+</section>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="probability-estimation">
+<h1>Probability Estimation<a class="headerlink" href="#probability-estimation" title="Permalink to this heading">#</a></h1>
+<p>Remember that we learned in the previous exercise <a class="reference external" href="https://zdelrosario.github.io/evc-course/exercises_solution/d19-e-stat04-distributions-solution.html#probability">stat04-distributions</a> that probability can be expressed as a mean (expectation). Thus, we can apply the same ideas about confidence intervals when estimating probabilities.</p>
+<p>To demonstrate, let’s study a simple structural model.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">grama.models</span> <span class="kn">import</span> <span class="n">make_cantilever_beam</span>
+<span class="n">md_beam</span> <span class="o">=</span> <span class="n">make_cantilever_beam</span><span class="p">()</span>
+<span class="n">md_beam</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>model: Cantilever Beam
+
+  inputs:
+    var_det:
+      t: [2, 4]
+      w: [2, 4]
+
+    var_rand:
+      H: (+1) norm, {&#39;mean&#39;: &#39;5.000e+02&#39;, &#39;s.d.&#39;: &#39;1.000e+02&#39;, &#39;COV&#39;: 0.2, &#39;skew.&#39;: 0.0, &#39;kurt.&#39;: 3.0}
+      V: (+1) norm, {&#39;mean&#39;: &#39;1.000e+03&#39;, &#39;s.d.&#39;: &#39;1.000e+02&#39;, &#39;COV&#39;: 0.1, &#39;skew.&#39;: 0.0, &#39;kurt.&#39;: 3.0}
+      E: (+0) norm, {&#39;mean&#39;: &#39;2.900e+07&#39;, &#39;s.d.&#39;: &#39;1.450e+06&#39;, &#39;COV&#39;: 0.05, &#39;skew.&#39;: 0.0, &#39;kurt.&#39;: 3.0}
+      Y: (-1) norm, {&#39;mean&#39;: &#39;4.000e+04&#39;, &#39;s.d.&#39;: &#39;2.000e+03&#39;, &#39;COV&#39;: 0.05, &#39;skew.&#39;: 0.0, &#39;kurt.&#39;: 3.0}
+
+    copula:
+      Independence copula
+
+  functions:
+      cross-sectional area: [&#39;w&#39;, &#39;t&#39;] -&gt; [&#39;c_area&#39;]
+      limit state: stress: [&#39;w&#39;, &#39;t&#39;, &#39;H&#39;, &#39;V&#39;, &#39;E&#39;, &#39;Y&#39;] -&gt; [&#39;g_stress&#39;]
+      limit state: displacement: [&#39;w&#39;, &#39;t&#39;, &#39;H&#39;, &#39;V&#39;, &#39;E&#39;, &#39;Y&#39;] -&gt; [&#39;g_disp&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+<p>This model has two outputs that model failure modes: <code class="docutils literal notranslate"><span class="pre">g_stress</span> <span class="pre">&lt;=</span> <span class="pre">0</span></code> when the beam exceeds its maximum stress, and <code class="docutils literal notranslate"><span class="pre">g_disp</span> <span class="pre">&lt;=</span> <span class="pre">0</span></code> when the tip deflection is beyond its designed limit. We can assess the probability of failure for both failure modes:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># NOTE: No need to edit</span>
+<span class="p">(</span>
+    <span class="n">md_beam</span>
+    <span class="o">&gt;&gt;</span> <span class="n">gr</span><span class="o">.</span><span class="n">ev_sample</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">df_det</span><span class="o">=</span><span class="s2">&quot;nom&quot;</span><span class="p">)</span>
+    <span class="o">&gt;&gt;</span> <span class="n">gr</span><span class="o">.</span><span class="n">tf_summarize</span><span class="p">(</span>
+        <span class="n">pof_stress</span><span class="o">=</span><span class="n">gr</span><span class="o">.</span><span class="n">pr</span><span class="p">(</span><span class="n">DF</span><span class="o">.</span><span class="n">g_stress</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">),</span>
+        <span class="n">pof_disp</span><span class="o">=</span><span class="n">gr</span><span class="o">.</span><span class="n">pr</span><span class="p">(</span><span class="n">DF</span><span class="o">.</span><span class="n">g_disp</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">),</span>
+    <span class="p">)</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>pof_stress</th>
+      <th>pof_disp</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0.06</td>
+      <td>0.06</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>Like the mean CI helpers, grama provides <code class="docutils literal notranslate"><span class="pre">gr.pr_lo()</span></code> and <code class="docutils literal notranslate"><span class="pre">gr.pr_up()</span></code> to easily compute confidence intervals on a probability:</p>
+<div class="admonition-the-probability-ci-helpers-are-different admonition">
+<p class="admonition-title">The probability CI helpers are different</p>
+<p>Note that the probability CI helpers <code class="docutils literal notranslate"><span class="pre">gr.pr_lo()</span></code> and <code class="docutils literal notranslate"><span class="pre">gr.pr_up()</span></code> are different from <code class="docutils literal notranslate"><span class="pre">gr.mean_lo()</span></code> and <code class="docutils literal notranslate"><span class="pre">gr.mean_up()</span></code>; namely, they only return values between <code class="docutils literal notranslate"><span class="pre">[0,</span> <span class="pre">1]</span></code>. Make sure to only use the probability helpers when estimating probabilities!</p>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">## NOTE: No need to edit; run and inspect</span>
+<span class="p">(</span>
+    <span class="n">md_beam</span>
+    <span class="o">&gt;&gt;</span> <span class="n">gr</span><span class="o">.</span><span class="n">ev_sample</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">df_det</span><span class="o">=</span><span class="s2">&quot;nom&quot;</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">101</span><span class="p">)</span>
+    <span class="o">&gt;&gt;</span> <span class="n">gr</span><span class="o">.</span><span class="n">tf_summarize</span><span class="p">(</span>
+        <span class="n">pof_lo</span><span class="o">=</span><span class="n">gr</span><span class="o">.</span><span class="n">pr_lo</span><span class="p">(</span><span class="n">DF</span><span class="o">.</span><span class="n">g_stress</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">),</span>
+        <span class="n">pof</span><span class="o">=</span><span class="n">gr</span><span class="o">.</span><span class="n">pr</span><span class="p">(</span><span class="n">DF</span><span class="o">.</span><span class="n">g_stress</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">),</span>
+        <span class="n">pof_up</span><span class="o">=</span><span class="n">gr</span><span class="o">.</span><span class="n">pr_up</span><span class="p">(</span><span class="n">DF</span><span class="o">.</span><span class="n">g_stress</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">),</span>
+    <span class="p">)</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>pof_lo</th>
+      <th>pof</th>
+      <th>pof_up</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0.003477</td>
+      <td>0.02</td>
+      <td>0.106641</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>This is an <em>extremely</em> wide confidence interval for the probability of failure; I get a value of <code class="docutils literal notranslate"><span class="pre">pof</span></code> anywhere between <code class="docutils literal notranslate"><span class="pre">0.003</span></code> and <code class="docutils literal notranslate"><span class="pre">0.11</span></code>!</p>
+<section id="q5-adjust-the-sample-size">
+<h2><strong>q5</strong> Adjust the sample size<a class="headerlink" href="#q5-adjust-the-sample-size" title="Permalink to this heading">#</a></h2>
+<p>Adjust the sample size <code class="docutils literal notranslate"><span class="pre">n</span></code> to achieve a CI width less than <code class="docutils literal notranslate"><span class="pre">0.1</span></code>.  Answer the questions under <em>observations</em> below.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">## TODO: Adjust the sample size</span>
+<span class="n">df_pof</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">md_beam</span>
+    <span class="o">&gt;&gt;</span> <span class="n">gr</span><span class="o">.</span><span class="n">ev_sample</span><span class="p">(</span>
+
+        <span class="n">n</span><span class="o">=</span><span class="mf">5e4</span><span class="p">,</span> 
+        <span class="n">df_det</span><span class="o">=</span><span class="s2">&quot;nom&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="o">&gt;&gt;</span> <span class="n">gr</span><span class="o">.</span><span class="n">tf_summarize</span><span class="p">(</span>
+        <span class="n">pof_lo</span><span class="o">=</span><span class="n">gr</span><span class="o">.</span><span class="n">pr_lo</span><span class="p">(</span><span class="n">DF</span><span class="o">.</span><span class="n">g_stress</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">),</span>
+        <span class="n">pof</span><span class="o">=</span><span class="n">gr</span><span class="o">.</span><span class="n">pr</span><span class="p">(</span><span class="n">DF</span><span class="o">.</span><span class="n">g_stress</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">),</span>
+        <span class="n">pof_up</span><span class="o">=</span><span class="n">gr</span><span class="o">.</span><span class="n">pr_up</span><span class="p">(</span><span class="n">DF</span><span class="o">.</span><span class="n">g_stress</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">),</span>
+    <span class="p">)</span>
+<span class="p">)</span>
+
+<span class="c1">## NOTE: No need to edit; use to check your work</span>
+<span class="k">assert</span> \
+    <span class="nb">abs</span><span class="p">(</span><span class="n">df_pof</span><span class="o">.</span><span class="n">pof_up</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">df_pof</span><span class="o">.</span><span class="n">pof_lo</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">&lt;</span> <span class="mf">0.1</span><span class="p">,</span> \
+    <span class="s2">&quot;CI is too wide; increase `n`&quot;</span>
+
+<span class="n">df_pof</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>eval_sample() is rounding n...
+</pre></div>
+</div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>pof_lo</th>
+      <th>pof</th>
+      <th>pof_up</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0.033094</td>
+      <td>0.03534</td>
+      <td>0.037732</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p><em>Observations</em></p>
+<ul class="simple">
+<li><p>Is the <code class="docutils literal notranslate"><span class="pre">pof</span></code> smaller than <code class="docutils literal notranslate"><span class="pre">0.04</span></code>?</p>
+<ul>
+<li><p>At a sample size of <code class="docutils literal notranslate"><span class="pre">n=5e4</span></code> I find that <code class="docutils literal notranslate"><span class="pre">pof_up</span> <span class="pre">~</span> <span class="pre">0.03973</span></code>, which suggests that <code class="docutils literal notranslate"><span class="pre">pof</span> <span class="pre">&lt;</span> <span class="pre">0.04</span></code>. At a sample size of <code class="docutils literal notranslate"><span class="pre">n=20</span></code> (as given in the default), the upper confidence limit <code class="docutils literal notranslate"><span class="pre">pof_up</span></code> exceeds <code class="docutils literal notranslate"><span class="pre">0.04</span></code>, so we need to increase <code class="docutils literal notranslate"><span class="pre">n</span></code> in order to make this determination.</p></li>
+</ul>
+</li>
+</ul>
+<!-- solution-end --></section>
+<section id="q6-design-for-small-failure-rate">
+<h2><strong>q6</strong> Design for small failure rate<a class="headerlink" href="#q6-design-for-small-failure-rate" title="Permalink to this heading">#</a></h2>
+<p>Adjust the deterministic variables <code class="docutils literal notranslate"><span class="pre">w</span></code> and <code class="docutils literal notranslate"><span class="pre">t</span></code> in order to <em>confidently</em> achieve a probability of failure due to stress less than <code class="docutils literal notranslate"><span class="pre">0.001</span></code>.</p>
+<p><em>Hint</em>: You adjusted the sample size <code class="docutils literal notranslate"><span class="pre">n</span></code> in the previous exercise. Make sure to use that learning when tackling this exercise.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">## TODO: Adjust the deterministic variables `w, t` to achieve a probability</span>
+<span class="c1">## of failure less than 0.001</span>
+<span class="n">df_pof_small</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">md_beam</span>
+    <span class="o">&gt;&gt;</span> <span class="n">gr</span><span class="o">.</span><span class="n">ev_sample</span><span class="p">(</span>
+
+        <span class="n">n</span><span class="o">=</span><span class="mf">1e4</span><span class="p">,</span> <span class="c1"># A larger sample size is necessary for a small CI</span>
+        <span class="n">df_det</span><span class="o">=</span><span class="n">gr</span><span class="o">.</span><span class="n">df_make</span><span class="p">(</span><span class="n">w</span><span class="o">=</span><span class="mf">3.0</span><span class="p">,</span> <span class="n">t</span><span class="o">=</span><span class="mf">3.5</span><span class="p">),</span>
+    <span class="p">)</span>
+    <span class="o">&gt;&gt;</span> <span class="n">gr</span><span class="o">.</span><span class="n">tf_summarize</span><span class="p">(</span>
+        <span class="n">pof_lo</span><span class="o">=</span><span class="n">gr</span><span class="o">.</span><span class="n">pr_lo</span><span class="p">(</span><span class="n">DF</span><span class="o">.</span><span class="n">g_stress</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">),</span>
+        <span class="n">pof</span><span class="o">=</span><span class="n">gr</span><span class="o">.</span><span class="n">pr</span><span class="p">(</span><span class="n">DF</span><span class="o">.</span><span class="n">g_stress</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">),</span>       <span class="c1"># I find that pof ~= 0.0</span>
+        <span class="n">pof_up</span><span class="o">=</span><span class="n">gr</span><span class="o">.</span><span class="n">pr_up</span><span class="p">(</span><span class="n">DF</span><span class="o">.</span><span class="n">g_stress</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">),</span> <span class="c1"># pof_up must be &lt; 0.001</span>
+    <span class="p">)</span>
+<span class="p">)</span>
+
+<span class="c1">## NOTE: Use this to check your work</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df_pof_small</span><span class="p">)</span>
+
+<span class="k">assert</span> \
+    <span class="n">df_pof_small</span><span class="o">.</span><span class="n">pof_up</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mf">0.001</span><span class="p">,</span> \
+    <span class="s2">&quot;The upper CI bound for the POF is not less than 0.001&quot;</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>eval_sample() is rounding n...
+         pof_lo  pof    pof_up
+0  5.421011e-20  0.0  0.000787
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="real-vs-error">
+<h1>Real vs Error<a class="headerlink" href="#real-vs-error" title="Permalink to this heading">#</a></h1>
+<p>In <a class="reference external" href="https://zdelrosario.github.io/evc-course/exercises_solution/d08-e-stat02-source-solution.html#">stat02-source</a> we learned that we should treat real and erroneous sources of variability differently. Let’s apply that thinking to the beam example.</p>
+<section id="q7-selecting-the-proper-statistical-technique">
+<h2><strong>q7</strong> Selecting the proper statistical technique<a class="headerlink" href="#q7-selecting-the-proper-statistical-technique" title="Permalink to this heading">#</a></h2>
+<p>Suppose the variability exhibited by the model <code class="docutils literal notranslate"><span class="pre">md_beam</span></code> is real. Study the results from the simulation below, and answer the questions under <em>observations</em> below.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">## TODO: No need to edit; run and inspect the results</span>
+<span class="p">(</span>
+    <span class="n">md_beam</span>
+    <span class="o">&gt;&gt;</span> <span class="n">gr</span><span class="o">.</span><span class="n">ev_sample</span><span class="p">(</span>
+        <span class="n">n</span><span class="o">=</span><span class="mf">1e4</span><span class="p">,</span> 
+        <span class="n">df_det</span><span class="o">=</span><span class="s2">&quot;nom&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="o">&gt;&gt;</span> <span class="n">gr</span><span class="o">.</span><span class="n">tf_summarize</span><span class="p">(</span>
+        <span class="n">g_lo</span><span class="o">=</span><span class="n">gr</span><span class="o">.</span><span class="n">mean_lo</span><span class="p">(</span><span class="n">DF</span><span class="o">.</span><span class="n">g_stress</span><span class="p">),</span>
+        <span class="n">g_mean</span><span class="o">=</span><span class="n">gr</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">DF</span><span class="o">.</span><span class="n">g_stress</span><span class="p">),</span>
+        <span class="n">g_up</span><span class="o">=</span><span class="n">gr</span><span class="o">.</span><span class="n">mean_up</span><span class="p">(</span><span class="n">DF</span><span class="o">.</span><span class="n">g_stress</span><span class="p">),</span>
+
+        <span class="n">pof_lo</span><span class="o">=</span><span class="n">gr</span><span class="o">.</span><span class="n">pr_lo</span><span class="p">(</span><span class="n">DF</span><span class="o">.</span><span class="n">g_stress</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">),</span>
+        <span class="n">pof</span><span class="o">=</span><span class="n">gr</span><span class="o">.</span><span class="n">pr</span><span class="p">(</span><span class="n">DF</span><span class="o">.</span><span class="n">g_stress</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">),</span>
+        <span class="n">pof_up</span><span class="o">=</span><span class="n">gr</span><span class="o">.</span><span class="n">pr_up</span><span class="p">(</span><span class="n">DF</span><span class="o">.</span><span class="n">g_stress</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">),</span>
+    <span class="p">)</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>eval_sample() is rounding n...
+</pre></div>
+</div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>g_lo</th>
+      <th>g_mean</th>
+      <th>g_up</th>
+      <th>pof_lo</th>
+      <th>pof</th>
+      <th>pof_up</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0.165897</td>
+      <td>0.168285</td>
+      <td>0.170674</td>
+      <td>0.032335</td>
+      <td>0.0373</td>
+      <td>0.042994</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p><em>Observations</em></p>
+<ul class="simple">
+<li><p>Is the variability in <code class="docutils literal notranslate"><span class="pre">g_stress</span></code> real or erroneous?</p>
+<ul>
+<li><p>We’re assuming that the variability exhibited by this model is real, so the variability in <code class="docutils literal notranslate"><span class="pre">g_stress</span></code> is real.</p></li>
+</ul>
+</li>
+<li><p>Is the mean of <code class="docutils literal notranslate"><span class="pre">g_stress</span></code> greater than zero?</p>
+<ul>
+<li><p>Yes; the confidence interval for <code class="docutils literal notranslate"><span class="pre">g_stress</span></code> is entirely above zero (<code class="docutils literal notranslate"><span class="pre">0</span> <span class="pre">&lt;</span> <span class="pre">g_lo</span></code>).</p></li>
+</ul>
+</li>
+<li><p>What is the probability of failure due to stress?</p>
+<ul>
+<li><p>The probability of failure is between <code class="docutils literal notranslate"><span class="pre">[0.03,</span> <span class="pre">0.04]</span></code>; it is fairly small but non-negligible.</p></li>
+</ul>
+</li>
+<li><p>Which of the two statistical techniques—computing the mean or computing a probability of failure—better characterizes the safety of this system? Why?</p>
+<ul>
+<li><p>The probability of failure better characterizes the safety of the system. Remember that the mean is most appropriate when variability is purely error, so it is an inappropriate summary of the behavior of this system. A probability of failure is a very natural measure of safety.</p></li>
+</ul>
+</li>
+</ul>
+<!-- solution-end --></section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./exercises_solution"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+                <footer class="bd-footer-article">
+                  
+<div class="footer-article-items footer-article__inner">
+  
+    <div class="footer-article-item"><!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="d15-e-grama05-fit-function-solution.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Grama: Fitting Functions</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="d17-e-stat06-spc-solution.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Stats: Fundamentals of Statistical Process Monitoring</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div></div>
+  
+</div>
+
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Stats: Confidence Intervals and the CLT</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#setup">Setup</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#theory-fundamentals">Theory Fundamentals</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#motivation-we-might-have-seen-other-data">Motivation: We might have seen other data</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sampling-distribution">Sampling Distribution</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#central-limit-theorem-clt">Central Limit Theorem (CLT)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#q1-study-clt-convergence-behavior"><strong>q1</strong> Study CLT convergence behavior</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#confidence-intervals-ci">Confidence Intervals (CI)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#q2-compute-a-confidence-interval"><strong>q2</strong> Compute a confidence interval</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#q3-study-the-ci-width"><strong>q3</strong> Study the CI width</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#interpreting-confidence-intervals">Interpreting Confidence Intervals</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#golden-rule-of-confidence-intervals">Golden Rule of Confidence Intervals</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#q4-interpret-these-intervals"><strong>q4</strong> Interpret these intervals</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#probability-estimation">Probability Estimation</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#q5-adjust-the-sample-size"><strong>q5</strong> Adjust the sample size</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#q6-design-for-small-failure-rate"><strong>q6</strong> Design for small failure rate</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#real-vs-error">Real vs Error</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#q7-selecting-the-proper-statistical-technique"><strong>q7</strong> Selecting the proper statistical technique</a></li>
+</ul>
+</li>
+</ul>
+
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Zachary del Rosario
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
