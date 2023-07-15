@@ -14,7 +14,7 @@ help you set up your environment.
 
 We will work through a number of programming exercises in this course. We have consolidated the exercise notebooks and installation files in a single zip; download the following and unzip.
 
-- [Course materials](https://github.com/zdelrosario/evc-course/archive/refs/heads/build.zip)
+- [Course materials](https://github.com/zdelrosario/evc-course-short/archive/refs/heads/build.zip)
 
 This will download a file called `evc-course-build.zip`. Save this to a stable location on your computer; for instance, your Documents folder.
 
