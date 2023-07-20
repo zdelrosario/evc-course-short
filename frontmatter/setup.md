@@ -16,7 +16,7 @@ We will work through a number of programming exercises in this course. We have c
 
 - [Course materials](https://github.com/zdelrosario/evc-course-short/archive/refs/heads/build.zip)
 
-This will download a file called `evc-course-build.zip`. Save this to a stable location on your computer; for instance, your Documents folder.
+This will download a file called `evc-course-short-build.zip`. Save this to a stable location on your computer; for instance, your Documents folder.
 
 # Python and Jupyter Installation
 <!-- ------------------------- -->
