@@ -1,7 +1,7 @@
 (submission)=
 # Challenge Submission Instructions
 
-When you complete a Challenge, you should submit it on Gradescope. This page contains instructions to help you submit your assignment so you can get feedback. (Remember that the Exercises in this course do not have a required submission.)
+When you complete a Challenge, you should submit it to the instructor. This page contains instructions to help you submit your assignment so you can get feedback. (Remember that the Exercises in this course do not have a required submission.)
 
 **Note**: In order to export a jupyter notebook to a PDF, you will need to have a latex installation. See [this website](https://www.latex-project.org/get/) for instructions on installing latex across different operating systems (Linux, Mac OS, and Windows).
 
@@ -25,8 +25,8 @@ Once you have re-run the notebook, you can export it to a PDF document. This mak
 
 ![Click `File > Export Notebook As... > PDF` to export to PDF.](./images/submission-export-pdf.png)
 
-## 4. Submit the Challenge PDF to Gradescope
+## 4. Email the notebook to the instructor
 
-Follow the instructions on Gradescope for the relevant challenge to upload your submission. Note that you will need to select the pages on your PDF submission that are relevant to each task (q1, q2, etc.). This helps us distribute the grading among the teaching team.
+Once you've generated a PDF, simply email your assignment to the instructor!
 
-Please reach out (via email or on Discord) if you have trouble with any of these steps!
+Please reach out (via email) if you have trouble with any of these steps!
